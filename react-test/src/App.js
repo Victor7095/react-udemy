@@ -62,8 +62,8 @@ class App extends Component {
                 key={person.id}
                 name={person.name}
                 age={person.age}
-                click={this.deletePersonHandler.bind(this, index)}
                 changed={this.nameChangedHandler.bind(null, person.id)}
+                click={this.deletePersonHandler.bind(this, index)}
               >
                 I L0ve Vue.js !
               </Person>
