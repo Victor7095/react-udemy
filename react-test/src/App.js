@@ -8,7 +8,8 @@ class App extends Component {
     this.state = {
       persons: [
         { id: 1, name: "Yan", age: 18 },
-        { id: 2, name: "Ygor", age: 12 }
+        { id: 2, name: "Ygor", age: 12 },
+        { id: 3, name: "Geralt", age: 9000 }
       ],
       showPersons: false
     };
@@ -43,14 +44,6 @@ class App extends Component {
   render() {
     const { persons, showPersons } = this.state;
 
-    const style = {
-      backgroundColor: "white",
-      font: "inherit",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer"
-    };
-
     let personsEl = null;
 
     if (showPersons) {
@@ -73,10 +66,23 @@ class App extends Component {
       );
     }
 
+    let classes = [""];
+    if (persons.length <= 2) {
+      classes.push("red");
+    }
+    if (persons.length <= 1) {
+      classes.push("bold");
+    }
+
     return (
       <div className="App">
-        <h1>Hello World</h1>
-        <button style={style} type="button" onClick={this.tooglePersonsHandler}>
+        <h1>My React App</h1>
+        <p className={classes.join(" ")}>A test paragraph</p>
+        <button
+          alt={showPersons}
+          type="button"
+          onClick={this.tooglePersonsHandler}
+        >
           Toogle Persons
         </button>
         {personsEl}
