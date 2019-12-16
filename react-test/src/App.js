@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classes from "./App.css";
 import Person from "./Person/Person";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 class App extends Component {
   constructor(props) {
@@ -53,15 +54,16 @@ class App extends Component {
         <div>
           {persons.map((person, index) => {
             return (
-              <Person
-                key={person.id}
-                name={person.name}
-                age={person.age}
-                changed={this.nameChangedHandler.bind(null, person.id)}
-                click={this.deletePersonHandler.bind(this, index)}
-              >
-                I L0ve Vue.js !
-              </Person>
+              <ErrorBoundary key={person.id}>
+                <Person
+                  name={person.name}
+                  age={person.age}
+                  changed={this.nameChangedHandler.bind(null, person.id)}
+                  click={this.deletePersonHandler.bind(this, index)}
+                >
+                  I L0ve Vue.js !
+                </Person>
+              </ErrorBoundary>
             );
           })}
         </div>
