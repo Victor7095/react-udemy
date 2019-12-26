@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classes from "./App.css";
-import Person from "../components/Persons/Person/Person";
+import Cockpit from "../components/Cockpit/Cockpit";
+import Persons from "../components/Persons/Persons";
 
 class App extends Component {
   constructor(props) {
@@ -44,49 +45,25 @@ class App extends Component {
   render() {
     const { persons, showPersons } = this.state;
 
-    const btnClass = [classes.Button];
-
     let personsEl = null;
 
     if (showPersons) {
       personsEl = (
-        <div>
-          {persons.map((person, index) => {
-            return (
-              <Person
-                name={person.name}
-                age={person.age}
-                changed={this.nameChangedHandler.bind(null, person.id)}
-                click={this.deletePersonHandler.bind(this, index)}
-              >
-                I L0ve Vue.js !
-              </Person>
-            );
-          })}
-        </div>
+        <Persons
+          persons={persons}
+          changed={this.nameChangedHandler}
+          clicked={this.deletePersonHandler}
+        ></Persons>
       );
-      btnClass.push(classes.Red);
-    }
-
-    let assignedClasses = [""];
-    if (persons.length <= 2) {
-      assignedClasses.push(classes.red);
-    }
-    if (persons.length <= 1) {
-      assignedClasses.push(classes.bold);
     }
 
     return (
       <div className={classes.App}>
-        <h1>My React App</h1>
-        <p className={assignedClasses.join(" ")}>A test paragraph</p>
-        <button
-          className={btnClass.join(" ")}
-          type="button"
-          onClick={this.tooglePersonsHandler}
-        >
-          Toogle Persons
-        </button>
+        <Cockpit
+          showPersons={showPersons}
+          persons={persons}
+          clicked={this.tooglePersonsHandler}
+        ></Cockpit>
         {personsEl}
       </div>
     );
