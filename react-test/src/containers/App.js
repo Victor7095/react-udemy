@@ -13,7 +13,8 @@ class App extends Component {
         { id: 2, name: "Ygor", age: 12 },
         { id: 3, name: "Geralt", age: 9000 }
       ],
-      showPersons: false
+      showPersons: false,
+      showCockpit: true
     };
   }
 
@@ -67,7 +68,7 @@ class App extends Component {
 
   render() {
     console.log("[App.js] render");
-    const { persons, showPersons } = this.state;
+    const { persons, showPersons, showCockpit } = this.state;
 
     let personsEl = null;
 
@@ -83,11 +84,20 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
-        <Cockpit
-          showPersons={showPersons}
-          persons={persons}
-          clicked={this.tooglePersonsHandler}
-        ></Cockpit>
+        <button
+          onClick={() => {
+            this.setState({ showCockpit: false });
+          }}
+        >
+          Remove Cockpit
+        </button>
+        {showCockpit ? (
+          <Cockpit
+            showPersons={showPersons}
+            persons={persons}
+            clicked={this.tooglePersonsHandler}
+          ></Cockpit>
+        ) : null}
         {personsEl}
       </div>
     );
