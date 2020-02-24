@@ -7,10 +7,14 @@ const Cockpit = props => {
 
   useEffect(() => {
     console.log("[Cockpit.js] useEffect");
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       alert("Hi");
     }, 1000);
-  }, [persons]);
+    return () => {
+      clearTimeout(timer);
+      console.log("[Cockpit.js] cleanup work in useEffect");
+    };
+  }, []);
 
   let assignedClasses = [""];
   const btnClass = [classes.Button];
