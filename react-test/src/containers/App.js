@@ -94,7 +94,7 @@ class App extends Component {
         {showCockpit ? (
           <Cockpit
             showPersons={showPersons}
-            persons={persons}
+            personsLength={persons.length}
             clicked={this.tooglePersonsHandler}
           ></Cockpit>
         ) : null}

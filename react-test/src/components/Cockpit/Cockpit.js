@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import classes from "./Cockpit.css";
 
 const Cockpit = props => {
-  const { showPersons, persons, clicked } = props;
+  const { showPersons, personsLength, clicked } = props;
 
   useEffect(() => {
     console.log("[Cockpit.js] useEffect");
@@ -19,10 +19,10 @@ const Cockpit = props => {
   let assignedClasses = [""];
   const btnClass = [classes.Button];
   if (showPersons) btnClass.push(classes.Red);
-  if (persons.length <= 2) {
+  if (personsLength <= 2) {
     assignedClasses.push(classes.red);
   }
-  if (persons.length <= 1) {
+  if (personsLength <= 1) {
     assignedClasses.push(classes.bold);
   }
 
@@ -37,4 +37,4 @@ const Cockpit = props => {
   );
 };
 
-export default Cockpit;
+export default React.memo(Cockpit);
