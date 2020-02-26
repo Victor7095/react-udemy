@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Aux from "../../../hoc/Aux";
 import classes from "./Person.css";
 
 class Person extends Component {
@@ -7,13 +7,13 @@ class Person extends Component {
     console.log("[Person.js] rendering...");
     const { name, age, children, click, changed } = this.props;
     return (
-      <div className={classes.Person}>
+      <Aux>
         <p onClick={click}>
           I am {name} and I am {age} years old
         </p>
         <p>{children}</p>
         <input type="text" onChange={changed} value={name} />
-      </div>
+      </Aux>
     );
   }
 }
