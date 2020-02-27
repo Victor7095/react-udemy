@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+
 import classes from "./App.css";
-import Cockpit from "../components/Cockpit/Cockpit";
 import Persons from "../components/Persons/Persons";
-import Aux from "../hoc/Aux";
+import Cockpit from "../components/Cockpit/Cockpit";
 import withClass from "../hoc/withClass";
+import Aux from "../hoc/Aux";
+import AuthContext from "../context/auth-context";
 
 class App extends Component {
   constructor(props) {
@@ -103,15 +105,21 @@ class App extends Component {
         >
           Remove Cockpit
         </button>
-        {showCockpit ? (
-          <Cockpit
-            showPersons={showPersons}
-            personsLength={persons.length}
-            clicked={this.tooglePersonsHandler}
-            login={this.loginHandler}
-          ></Cockpit>
-        ) : null}
-        {personsEl}
+        <AuthContext.Provider
+          value={{
+            authenticated,
+            login: this.loginHandler
+          }}
+        >
+          {showCockpit ? (
+            <Cockpit
+              showPersons={showPersons}
+              personsLength={persons.length}
+              clicked={this.tooglePersonsHandler}
+            ></Cockpit>
+          ) : null}
+          {personsEl}
+        </AuthContext.Provider>
       </Aux>
     );
   }
