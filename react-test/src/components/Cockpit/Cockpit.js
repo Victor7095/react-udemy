@@ -1,17 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import classes from "./Cockpit.css";
 
 const Cockpit = props => {
   const { showPersons, personsLength, clicked } = props;
 
+  const toggleBtnRef = useRef(null);
+
   useEffect(() => {
     console.log("[Cockpit.js] useEffect");
-    const timer = setTimeout(() => {
-      alert("Hi");
-    }, 1000);
+    // const timer = setTimeout(() => {
+    //   alert("Hi");
+    // }, 1000);
+    toggleBtnRef.current.click();
     return () => {
-      clearTimeout(timer);
+      //clearTimeout(timer);
       console.log("[Cockpit.js] cleanup work in useEffect");
     };
   }, []);
@@ -30,7 +33,12 @@ const Cockpit = props => {
     <div className={classes.Cockpit}>
       <h1>My React App</h1>
       <p className={assignedClasses.join(" ")}>A test paragraph</p>
-      <button className={btnClass.join(" ")} type="button" onClick={clicked}>
+      <button
+        className={btnClass.join(" ")}
+        type="button"
+        onClick={clicked}
+        ref={toggleBtnRef}
+      >
         Toogle Persons
       </button>
     </div>
