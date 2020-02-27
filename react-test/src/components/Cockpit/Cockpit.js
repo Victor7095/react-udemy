@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import classes from "./Cockpit.css";
 
 const Cockpit = props => {
-  const { showPersons, personsLength, clicked } = props;
+  const { showPersons, personsLength, clicked, login } = props;
 
   const toggleBtnRef = useRef(null);
 
@@ -41,6 +41,7 @@ const Cockpit = props => {
       >
         Toogle Persons
       </button>
+      <button onClick={login}>Log in</button>
     </div>
   );
 };

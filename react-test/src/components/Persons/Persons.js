@@ -22,7 +22,7 @@ class Persons extends PureComponent {
   }
 
   render() {
-    const { persons, clicked, changed } = this.props;
+    const { persons, clicked, changed, isAuthenticated } = this.props;
     console.log("[Persons.js] rendering...");
     return persons.map((person, index) => {
       return (
@@ -32,6 +32,7 @@ class Persons extends PureComponent {
           changed={changed.bind(null, person.id)}
           click={clicked.bind(this, index)}
           key={index}
+          isAuth={isAuthenticated}
         >
           I L0ve Vue.js !
         </Person>
