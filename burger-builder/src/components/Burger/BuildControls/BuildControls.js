@@ -10,7 +10,7 @@ const controls = [
     { label: "Meat", type: "meat" }
 ];
 
-const buildControls = ({ingredientAdded, ingredientRemoved, disabled, purchasable, price}) => (
+const buildControls = ({ingredientAdded, ingredientRemoved, disabled, purchasable, price, ordered}) => (
     <div className={classes.BuildControls}>
         <p>Current Price: <strong>{price.toFixed(2)}</strong></p>
         {controls.map(control => (
@@ -24,6 +24,7 @@ const buildControls = ({ingredientAdded, ingredientRemoved, disabled, purchasabl
         <button
             className={classes.OrderButton}
             disabled={!purchasable}
+            onClick={ordered}
         > ORDER NOW 
         </button>
     </div>
