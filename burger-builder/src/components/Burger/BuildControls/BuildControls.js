@@ -10,11 +10,14 @@ const controls = [
     { label: "Meat", type: "meat" }
 ];
 
-const buildControls = props => {
+const buildControls = ({ingredientAdded}) => {
     console.log(classes)
     return <div className={classes.BuildControls}>
         {controls.map(control => (
-            <BuildControl key={control.label} label={control.label}/>
+            <BuildControl 
+                key={control.label}
+                label={control.label}
+                added={() => ingredientAdded(control.type)}/>
         ))}
     </div>;
 }
