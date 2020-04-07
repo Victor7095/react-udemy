@@ -2,11 +2,11 @@ import React from 'react';
 
 import './Post.css';
 
-const post = (props) => (
+const post = ({title, author}) => (
     <article className="Post">
-        <h1>Title</h1>
+        <h1>{title}</h1>
         <div className="Info">
-            <div className="Author">Author</div>
+            <div className="Author">{author}</div>
         </div>
     </article>
 );
