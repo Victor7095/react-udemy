@@ -42,9 +42,8 @@ class Posts extends Component {
     if (!this.state.error)
       posts = this.state.posts.map((post) => {
         return (
-          <Link to={"/posts/" + post.id}>
+          <Link to={"/posts/" + post.id} key={post.id}>
             <Post
-              key={post.id}
               title={post.title}
               author={post.author}
               clicked={() => this.postSelectedHandler(post.id)}
@@ -56,7 +55,7 @@ class Posts extends Component {
     return (
       <div>
         <section className="Posts">{posts}</section>
-        <Route path={this.props.match.url+"/:id"} component={FullPost} />
+        <Route path={this.props.match.url + "/:id"} component={FullPost} />
       </div>
     );
   }
