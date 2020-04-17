@@ -14,7 +14,7 @@ class Checkout extends Component {
     return (
       <div>
         <CheckoutSummary
-          ingredients={["salad", "cheese", "bacon"]}
+          ingredients={this.props.location.state.ingredients}
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />

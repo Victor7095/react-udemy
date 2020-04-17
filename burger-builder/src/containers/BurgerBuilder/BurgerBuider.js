@@ -36,6 +36,7 @@ class BurgerBuilder extends Component {
         ingredientsQuantity,
         totalPrice: newPrice
       });
+      this.updatePurchaseState(ingredientsOrder);
     }).catch(err => this.setState({error: true}));
   }
 
