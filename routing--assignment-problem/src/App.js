@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link, Redirect, Switch } from "react-router-dom";
 
 import Courses from "./containers/Courses/Courses";
 import Users from "./containers/Users/Users";
@@ -39,8 +39,15 @@ class App extends Component {
         </ol>
         <BrowserRouter>
           <Fragment>
-            <Route path="/users" component={Users} />
-            <Route path="/courses" component={Courses} />
+            <Link to="/users">Users</Link>&nbsp;
+            <Link to="/courses">Courses</Link>&nbsp;
+            <Link to="/asas">Not found</Link>
+            <Switch>
+              <Route path="/users" component={Users} />
+              <Route path="/courses" component={Courses} />
+              <Redirect from="/all-courses" to="/courses" />
+              <Route path="/" render={() => <h1>Not found</h1>} />
+            </Switch>
           </Fragment>
         </BrowserRouter>
       </div>
