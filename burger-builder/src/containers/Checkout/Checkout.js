@@ -7,11 +7,12 @@ import ContactData from "./ContactData/ContactData";
 class Checkout extends Component {
   state = {
     ingredients: [],
+    price: 0,
   };
 
   componentDidMount() {
-    const { ingredients } = this.props.location.state ?? [];
-    this.setState({ ingredients });
+    const { ingredients, price } = this.props.location.state ?? [];
+    this.setState({ ingredients, price });
   }
 
   checkoutCancelledHandler = () => {
@@ -22,16 +23,17 @@ class Checkout extends Component {
   };
 
   render() {
+    const { ingredients = [], price } = this.state;
     return (
       <div>
         <CheckoutSummary
-          ingredients={this.state.ingredients ?? []}
+          ingredients={ingredients}
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />
         <Route
           path={this.props.match.url + "/contact-data"}
-          component={ContactData}
+          render={props => <ContactData ingredients={ingredients} price={price} {...props} />}
         />
       </div>
     );
