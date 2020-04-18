@@ -2,10 +2,18 @@ import React from "react";
 
 import classes from "./Order.module.css";
 
-const order = (props) => (
+const order = ({ ingredients, price }) => (
   <div className={classes.Order}>
-    <p>Ingredients: Salad</p>
-    <p>Price: <strong>R$ 4,00</strong></p>
+    <p>Ingredients: {ingredients.join(", ")}</p>
+    <p>
+      Price:{" "}
+      <strong>
+        {Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(price)}
+      </strong>
+    </p>
   </div>
 );
 
