@@ -2,17 +2,55 @@ import React from "react";
 
 import classes from "./Input.module.css";
 
-const input = ({ label, inputType, ...props }) => {
+const input = ({ label, elType, elConfig, value, onChange }) => {
   let inputEl = null;
-  switch (inputType) {
+  switch (elType) {
     case "input":
-      inputEl = <input className={classes.InputElement} {...props} />;
+      inputEl = (
+        <input
+          className={classes.InputElement}
+          {...elConfig}
+          value={value}
+          onChange={onChange}
+        />
+      );
       break;
     case "textarea":
-      inputEl = <textarea className={classes.InputElement} {...props} />;
+      inputEl = (
+        <textarea
+          className={classes.InputElement}
+          {...elConfig}
+          value={value}
+          onChange={onChange}
+        />
+      );
+      break;
+    case "select":
+      const { options, ...config } = elConfig;
+      inputEl = (
+        <select
+          className={classes.InputElement}
+          {...config}
+          value={value}
+          onChange={onChange}
+        >
+          {options.map(({ text, value }) => (
+            <option key={value} value={value}>
+              {text}
+            </option>
+          ))}
+        </select>
+      );
       break;
     default:
-      inputEl = <input className={classes.InputElement} />;
+      inputEl = (
+        <input
+          className={classes.InputElement}
+          {...elConfig}
+          value={value}
+          onChange={onChange}
+        />
+      );
   }
   return (
     <div className={classes.Input}>
