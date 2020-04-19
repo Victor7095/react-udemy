@@ -20,6 +20,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
         value: "Victor Yan",
       },
       street: {
@@ -32,6 +33,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
         value: "Av. Torquato Tapajós",
       },
       zipCode: {
@@ -46,6 +48,7 @@ class ContactData extends Component {
           maxLength: 9,
         },
         valid: false,
+        touched: false,
         value: "69093-415",
       },
       country: {
@@ -58,6 +61,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
         value: "Brazil",
       },
       email: {
@@ -70,6 +74,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
         value: "victoryan345@gmail.com",
       },
       deliveryMethod: {
@@ -91,6 +96,7 @@ class ContactData extends Component {
     const formField = { ...updatedForm[key] };
     formField.value = e.target.value;
     formField.valid = this.checkValidity(formField.value, formField.validation);
+    formField.touched = true;
     updatedForm[key] = formField;
     this.setState({ orderForm: updatedForm });
   };
@@ -144,16 +150,17 @@ class ContactData extends Component {
   render() {
     const formKeys = Object.keys(this.state.orderForm);
     let inputs = formKeys.map((key) => {
-      const { elType, elConfig, valid, value, validation } = this.state.orderForm[key];
+      const { elType, elConfig, valid, validation, touched, value } = this.state.orderForm[key];
       return (
         <Input
           key={key}
           elType={elType}
           elConfig={elConfig}
           value={value}
-          onChange={(e) => this.inputChangedHandler(e, key)}
           shouldValidate={validation}
           invalid={!valid}
+          touched={touched}
+          onChange={(e) => this.inputChangedHandler(e, key)}
         />
       );
     });

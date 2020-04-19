@@ -2,10 +2,10 @@ import React from "react";
 
 import classes from "./Input.module.css";
 
-const input = ({ label, elType, elConfig, value, onChange, invalid, shouldValidate }) => {
+const input = ({ label, elType, elConfig, value, onChange, invalid, shouldValidate, touched }) => {
   let inputEl = null;
   const inputClasses = [classes.InputElement];
-  if(invalid && shouldValidate) {
+  if(invalid && shouldValidate && touched) {
     inputClasses.push(classes.Invalid);
   }
   switch (elType) {
