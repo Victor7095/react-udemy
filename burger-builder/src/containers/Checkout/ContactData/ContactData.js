@@ -21,7 +21,7 @@ class ContactData extends Component {
         },
         valid: false,
         touched: false,
-        value: "Victor Yan",
+        value: "",
       },
       street: {
         elType: "input",
@@ -34,7 +34,7 @@ class ContactData extends Component {
         },
         valid: false,
         touched: false,
-        value: "Av. Torquato Tapajós",
+        value: "",
       },
       zipCode: {
         elType: "input",
@@ -49,7 +49,7 @@ class ContactData extends Component {
         },
         valid: false,
         touched: false,
-        value: "69093-415",
+        value: "",
       },
       country: {
         elType: "input",
@@ -62,7 +62,7 @@ class ContactData extends Component {
         },
         valid: false,
         touched: false,
-        value: "Brazil",
+        value: "",
       },
       email: {
         elType: "input",
@@ -75,7 +75,7 @@ class ContactData extends Component {
         },
         valid: false,
         touched: false,
-        value: "victoryan345@gmail.com",
+        value: "",
       },
       deliveryMethod: {
         elType: "select",
@@ -85,9 +85,11 @@ class ContactData extends Component {
             { text: "Cheapest", value: "cheapest" },
           ],
         },
+        valid: true,
         value: "",
       },
     },
+    formIsValid: false,
     loading: false,
   };
 
@@ -98,7 +100,14 @@ class ContactData extends Component {
     formField.valid = this.checkValidity(formField.value, formField.validation);
     formField.touched = true;
     updatedForm[key] = formField;
-    this.setState({ orderForm: updatedForm });
+
+    let formIsValid = true;
+    for (let fieldName in updatedForm) {
+      formIsValid = updatedForm[fieldName].valid && formIsValid;
+    }
+    console.log(formIsValid);
+
+    this.setState({ orderForm: updatedForm, formIsValid });
   };
 
   checkValidity(value, rules) {
@@ -168,7 +177,7 @@ class ContactData extends Component {
     let form = (
       <form onSubmit={this.orderHandler}>
         {inputs}
-        <Button type="Success">ORDER</Button>
+        <Button type="Success" disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
     if (this.state.loading) {
