@@ -85,8 +85,9 @@ class ContactData extends Component {
             { text: "Cheapest", value: "cheapest" },
           ],
         },
+        validation: {},
         valid: true,
-        value: "",
+        value: "fastest",
       },
     },
     formIsValid: false,
@@ -186,7 +187,7 @@ class ContactData extends Component {
 
     return (
       <div className={classes.ContactData}>
-        <h4>Enter your Contact Data</h4>
+        <h3>Enter your Contact Data</h3>
         {form}
       </div>
     );
