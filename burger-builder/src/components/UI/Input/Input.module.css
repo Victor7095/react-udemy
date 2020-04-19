@@ -21,6 +21,11 @@
   box-sizing: border-box;
 }
 
+.Invalid {
+  border: 1px solid red;
+  background-color: #FDA49A;
+}
+
 .InputElement:focus {
   outline: none;
   background-color: #ccc;

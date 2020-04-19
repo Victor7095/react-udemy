@@ -2,13 +2,17 @@ import React from "react";
 
 import classes from "./Input.module.css";
 
-const input = ({ label, elType, elConfig, value, onChange }) => {
+const input = ({ label, elType, elConfig, value, onChange, invalid, shouldValidate }) => {
   let inputEl = null;
+  const inputClasses = [classes.InputElement];
+  if(invalid && shouldValidate) {
+    inputClasses.push(classes.Invalid);
+  }
   switch (elType) {
     case "input":
       inputEl = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...elConfig}
           value={value}
           onChange={onChange}
@@ -18,7 +22,7 @@ const input = ({ label, elType, elConfig, value, onChange }) => {
     case "textarea":
       inputEl = (
         <textarea
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...elConfig}
           value={value}
           onChange={onChange}
@@ -29,7 +33,7 @@ const input = ({ label, elType, elConfig, value, onChange }) => {
       const { options, ...config } = elConfig;
       inputEl = (
         <select
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...config}
           value={value}
           onChange={onChange}
@@ -45,7 +49,7 @@ const input = ({ label, elType, elConfig, value, onChange }) => {
     default:
       inputEl = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...elConfig}
           value={value}
           onChange={onChange}

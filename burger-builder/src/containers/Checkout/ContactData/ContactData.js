@@ -144,7 +144,7 @@ class ContactData extends Component {
   render() {
     const formKeys = Object.keys(this.state.orderForm);
     let inputs = formKeys.map((key) => {
-      const { elType, elConfig, value } = this.state.orderForm[key];
+      const { elType, elConfig, valid, value, validation } = this.state.orderForm[key];
       return (
         <Input
           key={key}
@@ -152,6 +152,8 @@ class ContactData extends Component {
           elConfig={elConfig}
           value={value}
           onChange={(e) => this.inputChangedHandler(e, key)}
+          shouldValidate={validation}
+          invalid={!valid}
         />
       );
     });
