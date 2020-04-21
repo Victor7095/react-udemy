@@ -1,27 +1,39 @@
 const initialState = {
   counter: 0,
+  results: [],
 };
 
-const reducer = (state = initialState, {type, payload}) => {
+const reducer = (state = initialState, { type, payload }) => {
+  console.log(payload);
   const actions = {
-    "INCREMENT": () => ({
+    INCREMENT: () => ({
       ...state,
       counter: ++state.counter,
     }),
-    "DECREMENT": () => ({
+    DECREMENT: () => ({
       ...state,
       counter: --state.counter,
     }),
-    "ADD": () => ({
+    ADD: () => ({
       ...state,
       counter: state.counter + payload.value,
     }),
-    "SUBTRACT": () => ({
+    SUBTRACT: () => ({
       ...state,
       counter: state.counter - payload.value,
     }),
+    STORE_RESULT: () => ({
+      ...state,
+      results: [...state.results, state.counter],
+    }),
+    DELETE_RESULT: () => {
+      return {
+        ...state,
+        results: [...state.results.filter((val,index) => index !== payload.index)]
+      };
+    },
   };
-  if(actions[type]) return actions[type]();
+  if (actions[type]) return actions[type]();
   return state;
 };
 
