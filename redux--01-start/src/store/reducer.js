@@ -1,3 +1,5 @@
+import * as actionTypes from "./actions";
+
 const initialState = {
   counter: 0,
   results: [],
@@ -6,30 +8,32 @@ const initialState = {
 const reducer = (state = initialState, { type, payload }) => {
   console.log(payload);
   const actions = {
-    INCREMENT: () => ({
+    [actionTypes.INCREMENT]: () => ({
       ...state,
       counter: ++state.counter,
     }),
-    DECREMENT: () => ({
+    [actionTypes.DECREMENT]: () => ({
       ...state,
       counter: --state.counter,
     }),
-    ADD: () => ({
+    [actionTypes.ADD]: () => ({
       ...state,
       counter: state.counter + payload.value,
     }),
-    SUBTRACT: () => ({
+    [actionTypes.SUBTRACT]: () => ({
       ...state,
       counter: state.counter - payload.value,
     }),
-    STORE_RESULT: () => ({
+    [actionTypes.STORE_RESULT]: () => ({
       ...state,
       results: [...state.results, state.counter],
     }),
-    DELETE_RESULT: () => {
+    [actionTypes.DELETE_RESULT]: () => {
       return {
         ...state,
-        results: [...state.results.filter((val,index) => index !== payload.index)]
+        results: [
+          ...state.results.filter((val, index) => index !== payload.index),
+        ],
       };
     },
   };
