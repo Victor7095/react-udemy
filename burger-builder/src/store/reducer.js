@@ -7,13 +7,68 @@ const INGREDIENT_PRICES = {
   meat: 0.6,
 };
 
+const calculatePrice = (ingredientsQuantity) => {
+  let newPrice = 4;
+  const ingredientKeys = Object.keys(ingredientsQuantity);
+  ingredientKeys.forEach((key) => {
+    newPrice += ingredientsQuantity[key] * INGREDIENT_PRICES[key];
+  });
+  return newPrice;
+};
+
 const initialState = {
-  ingredients: [],
-  ingredientsQuantity: {},
-  totalPrice: 4,
+  ingredients: ["salad"],
+  ingredientsQuantity: {
+    salad: 1,
+    meat: 0,
+    bacon: 0,
+    cheese: 0,
+  },
+  totalPrice: 4.5,
 };
 
 const reducer = (state = initialState, action) => {
+  const actions = {
+    [actionTypes.ADD_INGREDIENT]: () => {
+      const newIngredients = [...state.ingredients];
+      newIngredients.push(action.igName);
+      
+      const ingredientsQuantity = { ...state.ingredientsQuantity };
+      ingredientsQuantity[action.igName]++;
+      
+      const newPrice = calculatePrice(ingredientsQuantity);
+      
+      return {
+        ...state,
+        ingredients: newIngredients,
+        ingredientsQuantity,
+        totalPrice: newPrice,
+      };
+      //this.updatePurchaseState(newIngredients);
+    },
+
+    [actionTypes.REMOVE_INGREDIENT]: () => {
+      const ingredientsQuantity = { ...state.ingredientsQuantity };
+      if (ingredientsQuantity[action.igName] > 0) {
+        const newIngredients = [...state.ingredients];
+        const igIndex = newIngredients.lastIndexOf(action.igName);
+        newIngredients.splice(igIndex, 1);
+
+        ingredientsQuantity[action.igName]--;
+
+        const newPrice = calculatePrice(ingredientsQuantity);
+
+        return {
+          ...state,
+          ingredients: newIngredients,
+          ingredientsQuantity,
+          totalPrice: newPrice,
+        };
+        //this.updatePurchaseState(newIngredients);
+      }
+    },
+  };
+  if (actions[action.type]) return actions[action.type]();
   return state;
 };
 
