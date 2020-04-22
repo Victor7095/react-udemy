@@ -7,14 +7,10 @@ const initialState = {
 const reducer = (state = initialState, { type, payload }) => {
   const actions = {
     [actionTypes.ADD_PERSON]: () => {
-      const newPerson = {
-        id: Math.random(), // not really unique but good enough here!
-        name: "Max",
-        age: Math.floor(Math.random() * 40),
-      };
+      payload.newPerson.id = Math.random();
       return {
         ...state,
-        persons: [...state.persons, newPerson],
+        persons: [...state.persons, payload.newPerson],
       };
     },
     [actionTypes.DELETE_PERSON]: () => ({
