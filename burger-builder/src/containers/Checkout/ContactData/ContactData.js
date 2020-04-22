@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Button from "../../../components/UI/Button/Button";
 import Input from "../../../components/UI/Input/Input";
@@ -160,7 +161,14 @@ class ContactData extends Component {
   render() {
     const formKeys = Object.keys(this.state.orderForm);
     let inputs = formKeys.map((key) => {
-      const { elType, elConfig, valid, validation, touched, value } = this.state.orderForm[key];
+      const {
+        elType,
+        elConfig,
+        valid,
+        validation,
+        touched,
+        value,
+      } = this.state.orderForm[key];
       return (
         <Input
           key={key}
@@ -178,7 +186,9 @@ class ContactData extends Component {
     let form = (
       <form onSubmit={this.orderHandler}>
         {inputs}
-        <Button type="Success" disabled={!this.state.formIsValid}>ORDER</Button>
+        <Button type="Success" disabled={!this.state.formIsValid}>
+          ORDER
+        </Button>
       </form>
     );
     if (this.state.loading) {
@@ -194,4 +204,9 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = (state) => ({
+  ingredients: state.ingredients,
+  price: state.totalPrice,
+});
+
+export default connect(mapStateToProps)(ContactData);
