@@ -13,7 +13,6 @@ import * as actionTypes from "../../store/actions";
 
 class BurgerBuilder extends Component {
   state = {
-    purchasable: false,
     purchasing: false,
     loading: false,
     error: false,
@@ -33,22 +32,14 @@ class BurgerBuilder extends Component {
       })
       .catch((err) => this.setState({ error: true }));
       */
-    this.updatePurchaseState();
-  }
-
-  updatePurchaseState() {
-    this.setState({ purchasable: this.props.ingredients.length > 0 });
   }
 
   addIngredientHandler = (type) => {
     this.props.onIngredientAdded(type);
-    console.log( this.props.ingredients )
-    this.updatePurchaseState();
   };
 
   removeIngredientHandler = (type) => {
     this.props.onIngredientRemoved(type);
-    this.updatePurchaseState();
   };
 
   purchaseHandler = () => {
@@ -70,7 +61,7 @@ class BurgerBuilder extends Component {
   };
 
   render() {
-    const { purchasing, purchasable, loading, error } = this.state;
+    const { purchasing, loading, error } = this.state;
 
     const { ingredients, ingredientsQuantity, totalPrice } = this.props;
 
@@ -96,7 +87,8 @@ class BurgerBuilder extends Component {
     }
 
     let burger = error ? <p>Ingredients can't not be loaded!</p> : <Spinner />;
-    if (ingredients)
+    if (ingredients) {
+      const purchasable = ingredients.length > 0;
       burger = (
         <Aux>
           <Burger ingredients={ingredients} />
@@ -110,6 +102,7 @@ class BurgerBuilder extends Component {
           />
         </Aux>
       );
+    }
 
     return (
       <Aux>
