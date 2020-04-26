@@ -17,14 +17,10 @@ const calculatePrice = (ingredientsQuantity) => {
 };
 
 const initialState = {
-  ingredients: ["salad"],
-  ingredientsQuantity: {
-    salad: 1,
-    meat: 0,
-    bacon: 0,
-    cheese: 0,
-  },
-  totalPrice: 4.5,
+  ingredients: null,
+  ingredientsQuantity: null,
+  totalPrice: 4.0,
+  error: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,12 +28,12 @@ const reducer = (state = initialState, action) => {
     [actionTypes.ADD_INGREDIENT]: () => {
       const newIngredients = [...state.ingredients];
       newIngredients.push(action.igName);
-      
+
       const ingredientsQuantity = { ...state.ingredientsQuantity };
       ingredientsQuantity[action.igName]++;
-      
+
       const newPrice = calculatePrice(ingredientsQuantity);
-      
+
       return {
         ...state,
         ingredients: newIngredients,
@@ -66,6 +62,29 @@ const reducer = (state = initialState, action) => {
         };
         //this.updatePurchaseState(newIngredients);
       }
+    },
+
+    [actionTypes.SET_INGREDIENTS]: () => {
+      const {
+        ingredientsOrder = [],
+        ingredientsQuantity,
+      } = action.ingredientsInfo;
+
+      const newPrice = calculatePrice(ingredientsQuantity);
+
+      return {
+        ...state,
+        ingredients: ingredientsOrder,
+        ingredientsQuantity,
+        totalPrice: newPrice,
+        error: false,
+      };
+    },
+    [actionTypes.FETCH_INGREDIENTS_FAILED]: () => {
+      return {
+        ...state,
+        error: true,
+      };
     },
   };
   if (actions[action.type]) return actions[action.type]();

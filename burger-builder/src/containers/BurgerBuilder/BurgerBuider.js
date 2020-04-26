@@ -12,29 +12,16 @@ import axios from "../../axios-orders";
 import {
   addIngredient,
   removeIngredient,
+  initIngredients
 } from "../../store/actions/";
 
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
-    loading: false,
-    error: false,
   };
 
   componentDidMount() {
-    /*axios
-      .get("/ingredientsData.json")
-      .then(({ data }) => {
-        const { ingredientsOrder = [], ingredientsQuantity } = data;
-        const newPrice = this.calculatePrice(ingredientsQuantity);
-        this.setState({
-          ingredients: ingredientsOrder,
-          ingredientsQuantity,
-          totalPrice: newPrice,
-        });
-      })
-      .catch((err) => this.setState({ error: true }));
-      */
+    this.props.onInitIngredients();
   }
 
   addIngredientHandler = (type) => {
@@ -58,9 +45,9 @@ class BurgerBuilder extends Component {
   };
 
   render() {
-    const { purchasing, loading, error } = this.state;
+    const { purchasing } = this.state;
 
-    const { ingredients, ingredientsQuantity, totalPrice } = this.props;
+    const { ingredients, ingredientsQuantity, totalPrice, error } = this.props;
 
     const disabledInfo = {
       ...ingredientsQuantity,
@@ -79,9 +66,6 @@ class BurgerBuilder extends Component {
           purchaseContinued={this.purchaseContinueHandler}
         />
       );
-    if (loading) {
-      orderSummary = <Spinner />;
-    }
 
     let burger = error ? <p>Ingredients can't not be loaded!</p> : <Spinner />;
     if (ingredients) {
@@ -116,11 +100,13 @@ const mapStateToProps = (state) => ({
   ingredients: state.ingredients,
   ingredientsQuantity: state.ingredientsQuantity,
   totalPrice: state.totalPrice,
+  error: state.error
 });
 
 const mapActionsToProps = (dispatch) => ({
   onIngredientAdded: (igName) => dispatch(addIngredient(igName)),
   onIngredientRemoved: (igName) => dispatch(removeIngredient(igName)),
+  onInitIngredients: () => dispatch(initIngredients()),
 });
 
 export default connect(
