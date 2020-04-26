@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import Button from "../../../components/UI/Button/Button";
 import Input from "../../../components/UI/Input/Input";
 import Spinner from "../../../components/UI/Spinner/Spinner";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../../axios-orders";
+import { purchaseBurgerStart } from "../../../store/actions/";
 
 import classes from "./ContactData.module.css";
 
@@ -146,16 +148,7 @@ class ContactData extends Component {
       customer: formData,
     };
 
-    this.setState({ loading: true });
-    axios
-      .post("/orders.json", order)
-      .then((res) => {
-        this.setState({ loading: false });
-        this.props.history.push("/");
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-      });
+    this.props.onOrderBurger(order);
   };
 
   render() {
@@ -209,4 +202,11 @@ const mapStateToProps = (state) => ({
   price: state.totalPrice,
 });
 
-export default connect(mapStateToProps)(ContactData);
+const mapActionsToProps = (dispatch) => ({
+  onOrderBurger: (order) => dispatch(purchaseBurgerStart(order)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withErrorHandler(ContactData, axios));
