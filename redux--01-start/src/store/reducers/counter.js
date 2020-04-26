@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { updateObject } from "../utility";
 
 const initialState = {
   counter: 0,
@@ -6,22 +7,22 @@ const initialState = {
 
 const reducer = (state = initialState, { type, payload }) => {
   const actions = {
-    [actionTypes.INCREMENT]: () => ({
-      ...state,
-      counter: ++state.counter,
-    }),
-    [actionTypes.DECREMENT]: () => ({
-      ...state,
-      counter: --state.counter,
-    }),
-    [actionTypes.ADD]: () => ({
-      ...state,
-      counter: state.counter + payload.value,
-    }),
-    [actionTypes.SUBTRACT]: () => ({
-      ...state,
-      counter: state.counter - payload.value,
-    }),
+    [actionTypes.INCREMENT]: () =>
+      updateObject(state, {
+        counter: state.counter + 1,
+      }),
+    [actionTypes.DECREMENT]: () =>
+      updateObject(state, {
+        counter: state.counter - 1,
+      }),
+    [actionTypes.ADD]: () =>
+      updateObject(state, {
+        counter: state.counter + payload.value,
+      }),
+    [actionTypes.SUBTRACT]: () =>
+      updateObject(state, {
+        counter: state.counter - payload.value,
+      }),
   };
   if (actions[type]) return actions[type]();
   return state;
