@@ -10,7 +10,7 @@ import {
   subtract,
   storeResult,
   deleteResult,
-} from "../../store/actions/actions";
+} from "../../store/actions";
 
 class Counter extends Component {
   state = {
