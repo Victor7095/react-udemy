@@ -30,3 +30,32 @@ export const purchaseBurger = (orderData) => {
 export const purchaseInit = () => {
   return { type: actionTypes.PURCHASE_INIT };
 };
+
+export const fetchOrdersStart = () => {
+  return { type: actionTypes.FETCH_ORDERS_START };
+};
+
+export const fetchOrdersSuccess = (orders) => {
+  return { type: actionTypes.FETCH_ORDERS_SUCCESS, orders };
+};
+
+export const fetchOrdersFail = (error) => {
+  return { type: actionTypes.FETCH_INGREDIENTS_FAILED, error };
+};
+
+export const fetchOrders = () => {
+  return (dispacth) => {
+    dispacth(fetchOrdersStart());
+    axios
+      .get("/orders.json")
+      .then((res) => {
+        const orders = Object.keys(res.data).map((key) => {
+          return { id: key, ...res.data[key] };
+        });
+        dispacth(fetchOrdersSuccess(orders));
+      })
+      .catch((err) => {
+        dispacth(fetchOrdersFail(err));
+      });
+  };
+};

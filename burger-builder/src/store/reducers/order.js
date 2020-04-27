@@ -20,6 +20,13 @@ const reducer = (state = initialState, action) => {
       purchased: true,
     }),
     [actionTypes.PURCHASE_BURGER_FAIL]: () => ({ ...state, loading: false }),
+    [actionTypes.FETCH_ORDERS_START]: () => ({ ...state, loading: true }),
+    [actionTypes.FETCH_ORDERS_SUCCESS]: () => ({
+      ...state,
+      orders: action.orders,
+      loading: false,
+    }),
+    [actionTypes.FETCH_ORDERS_FAIL]: () => ({ ...state, loading: false }),
   };
   if (actions[action.type]) return actions[action.type]();
   return state;
