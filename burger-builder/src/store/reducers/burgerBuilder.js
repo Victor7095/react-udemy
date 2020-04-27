@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { updateObject } from "../utility";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -34,12 +35,11 @@ const reducer = (state = initialState, action) => {
 
       const newPrice = calculatePrice(ingredientsQuantity);
 
-      return {
-        ...state,
+      return updateObject(state, {
         ingredients: newIngredients,
         ingredientsQuantity,
         totalPrice: newPrice,
-      };
+      });
       //this.updatePurchaseState(newIngredients);
     },
 
@@ -54,12 +54,11 @@ const reducer = (state = initialState, action) => {
 
         const newPrice = calculatePrice(ingredientsQuantity);
 
-        return {
-          ...state,
+        return updateObject(state, {
           ingredients: newIngredients,
           ingredientsQuantity,
           totalPrice: newPrice,
-        };
+        });
         //this.updatePurchaseState(newIngredients);
       }
     },
@@ -72,20 +71,17 @@ const reducer = (state = initialState, action) => {
 
       const newPrice = calculatePrice(ingredientsQuantity);
 
-      return {
-        ...state,
+      return updateObject(state, {
         ingredients: ingredientsOrder,
         ingredientsQuantity,
         totalPrice: newPrice,
         error: false,
-      };
+      });
     },
-    [actionTypes.FETCH_INGREDIENTS_FAILED]: () => {
-      return {
-        ...state,
+    [actionTypes.FETCH_INGREDIENTS_FAILED]: () =>
+      updateObject(state, {
         error: true,
-      };
-    },
+      }),
   };
   if (actions[action.type]) return actions[action.type]();
   return state;
