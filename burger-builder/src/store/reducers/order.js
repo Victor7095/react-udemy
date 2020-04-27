@@ -7,33 +7,49 @@ const initialState = {
   purchased: false,
 };
 
+const purchaseInit = (state, action) =>
+  updateObject(state, { purchased: false });
+
+const purchaseBurgerStart = (state, action) =>
+  updateObject(state, { loading: true });
+
+const purchaseBurgerSuccess = (state, action) =>
+  updateObject(state, {
+    loading: false,
+    orders: state.orders.concat(
+      updateObject(action.orderData, {
+        id: action.orderId,
+      })
+    ),
+    purchased: true,
+  });
+
+const purchaseBurgerFail = (state, action) =>
+  updateObject(state, { loading: false });
+
+const fetchOrdersStart = (state, action) =>
+  updateObject(state, { loading: true });
+
+const fetchOrdersSuccess = (state, action) =>
+  updateObject(state, {
+    orders: action.orders,
+    loading: false,
+  });
+
+const fetchOrdersFail = (state, action) =>
+  updateObject(state, { loading: false });
+
 const reducer = (state = initialState, action) => {
   const actions = {
-    [actionTypes.PURCHASE_INIT]: () =>
-      updateObject(state, { purchased: false }),
+    [actionTypes.PURCHASE_INIT]: () => purchaseInit(state, action),
     [actionTypes.PURCHASE_BURGER_START]: () =>
-      updateObject(state, { loading: true }),
+      purchaseBurgerStart(state, action),
     [actionTypes.PURCHASE_BURGER_SUCCESS]: () =>
-      updateObject(state, {
-        loading: false,
-        orders: state.orders.concat(
-          updateObject(action.orderData, {
-            id: action.orderId,
-          })
-        ),
-        purchased: true,
-      }),
-    [actionTypes.PURCHASE_BURGER_FAIL]: () =>
-      updateObject(state, { loading: false }),
-    [actionTypes.FETCH_ORDERS_START]: () =>
-      updateObject(state, { loading: true }),
-    [actionTypes.FETCH_ORDERS_SUCCESS]: () =>
-      updateObject(state, {
-        orders: action.orders,
-        loading: false,
-      }),
-    [actionTypes.FETCH_ORDERS_FAIL]: () =>
-      updateObject(state, { loading: false }),
+      purchaseBurgerSuccess(state, action),
+    [actionTypes.PURCHASE_BURGER_FAIL]: () => purchaseBurgerFail(state, action),
+    [actionTypes.FETCH_ORDERS_START]: () => fetchOrdersStart(state, action),
+    [actionTypes.FETCH_ORDERS_SUCCESS]: () => fetchOrdersSuccess(state, action),
+    [actionTypes.FETCH_ORDERS_FAIL]: () => fetchOrdersFail(state, action),
   };
   if (actions[action.type]) return actions[action.type]();
   return state;
