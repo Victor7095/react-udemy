@@ -10,8 +10,8 @@ export const purchaseBurgerFail = (error) => {
 };
 
 export const purchaseBurgerStart = () => {
-  return { type: actionTypes.PURCHASE_BURGER_START }
-}
+  return { type: actionTypes.PURCHASE_BURGER_START };
+};
 
 export const purchaseBurger = (orderData) => {
   return (dispacth) => {
@@ -25,4 +25,8 @@ export const purchaseBurger = (orderData) => {
         dispacth(purchaseBurgerFail(err));
       });
   };
+};
+
+export const purchaseInit = () => {
+  return { type: actionTypes.PURCHASE_INIT };
 };

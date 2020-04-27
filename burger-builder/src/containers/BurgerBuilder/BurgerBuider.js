@@ -12,7 +12,8 @@ import axios from "../../axios-orders";
 import {
   addIngredient,
   removeIngredient,
-  initIngredients
+  initIngredients,
+  purchaseInit,
 } from "../../store/actions/";
 
 class BurgerBuilder extends Component {
@@ -41,6 +42,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
+    this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
@@ -100,13 +102,14 @@ const mapStateToProps = (state) => ({
   ingredients: state.burgerBuilder.ingredients,
   ingredientsQuantity: state.burgerBuilder.ingredientsQuantity,
   totalPrice: state.burgerBuilder.totalPrice,
-  error: state.burgerBuilder.error
+  error: state.burgerBuilder.error,
 });
 
 const mapActionsToProps = (dispatch) => ({
   onIngredientAdded: (igName) => dispatch(addIngredient(igName)),
   onIngredientRemoved: (igName) => dispatch(removeIngredient(igName)),
   onInitIngredients: () => dispatch(initIngredients()),
+  onInitPurchase: () => dispatch(purchaseInit()),
 });
 
 export default connect(
