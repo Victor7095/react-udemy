@@ -5,7 +5,9 @@ import axios from "../../axios-orders";
 import Order from "../../components/Order/Order";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import { fetchOrders } from "../../store/actions/"
+import { fetchOrders } from "../../store/actions/";
+
+import classes from "./Orders.module.css";
 
 class Orders extends Component {
   componentDidMount() {
@@ -13,27 +15,26 @@ class Orders extends Component {
   }
 
   render() {
-    let orders = <Spinner/>;
+    let orders = <Spinner />;
     if (!this.props.loading) {
-      orders = this.props.orders.map(({id, ingredients, price}) => (
-        <Order
-          key={id}
-          ingredients={ingredients}
-          price={price}
-        />
+      orders = this.props.orders.map(({ id, ingredients, price }) => (
+        <Order key={id} ingredients={ingredients} price={price} />
       ));
     }
-    return <div>{orders}</div>;
+    return <div className={classes.Orders}>{orders}</div>;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   orders: state.order.orders,
-  loading: state.order.loading
+  loading: state.order.loading,
 });
 
-const mapActionsToProps = dispatch => ({
-  onFetchOrders: () => dispatch(fetchOrders())
+const mapActionsToProps = (dispatch) => ({
+  onFetchOrders: () => dispatch(fetchOrders()),
 });
 
-export default connect(mapStateToProps, mapActionsToProps)(withErrorHandler(Orders, axios));
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withErrorHandler(Orders, axios));

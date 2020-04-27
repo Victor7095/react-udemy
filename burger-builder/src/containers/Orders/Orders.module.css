@@ -1,0 +1,12 @@
+.Orders {
+  margin: 0 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Orders > * {
+  margin: 1em 0;
+}

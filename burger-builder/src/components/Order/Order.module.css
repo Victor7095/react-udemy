@@ -1,8 +1,21 @@
 .Order {
-  width: 80%;
+  width: 400px;
   border: 1px solid #eee;
-  box-shadow: 0 2px 3px #ccc;
+  box-shadow: 0 2px 5px #ccc;
   padding: 10px;
-  margin: 10px auto;
+  border-radius: 20px;
   box-sizing: border-box;
+}
+
+.Order:hover {
+  cursor: pointer;
+  box-shadow: 0 2px 10px #aaa;
+  transition: 0.2s;
+}
+
+.Order .price {
+  margin: 0;
+  text-align: end;
+  font-weight: bold;
+  font-size: x-large;
 }
