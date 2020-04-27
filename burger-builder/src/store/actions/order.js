@@ -19,7 +19,7 @@ export const purchaseBurger = (orderData) => {
     axios
       .post("/orders.json", orderData)
       .then((res) => {
-        dispacth(purchaseBurgerSuccess(res.data, orderData));
+        dispacth(purchaseBurgerSuccess(res.data.name, orderData));
       })
       .catch((err) => {
         dispacth(purchaseBurgerFail(err));
