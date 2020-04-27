@@ -6,7 +6,7 @@ import Input from "../../../components/UI/Input/Input";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../../axios-orders";
-import { purchaseBurgerStart } from "../../../store/actions/";
+import { purchaseBurger } from "../../../store/actions/";
 
 import classes from "./ContactData.module.css";
 
@@ -93,8 +93,7 @@ class ContactData extends Component {
         value: "fastest",
       },
     },
-    formIsValid: false,
-    loading: false,
+    formIsValid: false
   };
 
   inputChangedHandler = (e, key) => {
@@ -109,7 +108,6 @@ class ContactData extends Component {
     for (let fieldName in updatedForm) {
       formIsValid = updatedForm[fieldName].valid && formIsValid;
     }
-    console.log(formIsValid);
 
     this.setState({ orderForm: updatedForm, formIsValid });
   };
@@ -184,7 +182,7 @@ class ContactData extends Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
@@ -200,10 +198,11 @@ class ContactData extends Component {
 const mapStateToProps = (state) => ({
   ingredients: state.ingredients,
   price: state.totalPrice,
+  loading: state.loading
 });
 
 const mapActionsToProps = (dispatch) => ({
-  onOrderBurger: (order) => dispatch(purchaseBurgerStart(order)),
+  onOrderBurger: (order) => dispatch(purchaseBurger(order)),
 });
 
 export default connect(

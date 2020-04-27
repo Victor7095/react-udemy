@@ -9,8 +9,13 @@ export const purchaseBurgerFail = (error) => {
   return { type: actionTypes.PURCHASE_BURGER_FAIL, error };
 };
 
-export const purchaseBurgerStart = (orderData) => {
+export const purchaseBurgerStart = () => {
+  return { type: actionTypes.PURCHASE_BURGER_START }
+}
+
+export const purchaseBurger = (orderData) => {
   return (dispacth) => {
+    dispacth(purchaseBurgerStart());
     axios
       .post("/orders.json", orderData)
       .then((res) => {
