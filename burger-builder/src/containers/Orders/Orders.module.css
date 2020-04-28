@@ -1,5 +1,5 @@
 .Orders {
-  margin: 0 100px;
+  margin: 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -7,6 +7,8 @@
   align-items: center;
 }
 
-.Orders > * {
-  margin: 1em 0;
+@media (max-width: 600px) { 
+  .Orders {
+    margin: 0 10px;
+  }
 }

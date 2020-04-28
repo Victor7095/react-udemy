@@ -8,15 +8,13 @@ import Orders from "./containers/Orders/Orders";
 
 function App() {
   return (
-    <div>
-      <Layout>
-        <Switch>
-          <Route path="/" exact component={BurgerBuilder} />
-          <Route path="/checkout" component={Checkout} />
-          <Route path="/orders" component={Orders} />
-        </Switch>
-      </Layout>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path="/" exact component={BurgerBuilder} />
+        <Route path="/checkout" component={Checkout} />
+        <Route path="/orders" component={Orders} />
+      </Switch>
+    </Layout>
   );
 }
 

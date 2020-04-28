@@ -1,9 +1,10 @@
 .Order {
-  width: 400px;
+  width: 48%;
   border: 1px solid #eee;
   box-shadow: 0 2px 5px #ccc;
   padding: 10px;
   border-radius: 20px;
+  margin: 1em auto;
   box-sizing: border-box;
 }
 
@@ -14,8 +15,14 @@
 }
 
 .Order .price {
-  margin: 0;
+  margin: 10px 0 0 0;
   text-align: end;
   font-weight: bold;
-  font-size: x-large;
+  font-size: xx-large;
+}
+
+@media (min-width: 600px) {
+  .Order {
+    width: 200px;
+  }
 }

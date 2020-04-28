@@ -1,25 +1,32 @@
 import React from "react";
-import classes from "./BurgerIngredient.module.css";
 import PropTypes from "prop-types";
 
-const burgerIngredient = ({type}) => {
-    const ingredientChoices = {
-        "bread-bottom": <div className={classes.BreadBottom}></div>,
-        "bread-top": (<div className={classes.BreadTop}>
-            <div className={classes.Seeds1}></div>
-            <div className={classes.Seeds2}></div>
-        </div>),
-        "meat": <div className={classes.Meat}></div>,
-        "cheese": <div className={classes.Cheese}></div>,
-        "bacon": <div className={classes.Bacon}></div>,
-        "salad": <div className={classes.Salad}></div>
-    };
+import classes from "./BurgerIngredient.module.css";
 
-    return ingredientChoices[type];
+const burgerIngredient = ({ type, small = false }) => {
+  const ingredientClasses = small ? [classes.small] : [];
+
+  const ingredientChoices = {
+    "bread-bottom": (
+      <div className={[...ingredientClasses, classes.BreadBottom].join(" ")}></div>
+    ),
+    "bread-top": (
+      <div className={[...ingredientClasses, classes.BreadTop].join(" ")}>
+        <div className={[...ingredientClasses, classes.Seeds1].join(" ")}></div>
+        <div className={[classes.Seeds2]}></div>
+      </div>
+    ),
+    meat: <div className={[...ingredientClasses, classes.Meat].join(" ")}></div>,
+    cheese: <div className={[...ingredientClasses, classes.Cheese].join(" ")}></div>,
+    bacon: <div className={[...ingredientClasses, classes.Bacon].join(" ")}></div>,
+    salad: <div className={[...ingredientClasses, classes.Salad].join(" ")}></div>,
+  };
+
+  return ingredientChoices[type];
 };
 
 burgerIngredient.propTypes = {
-    type: PropTypes.string.isRequired
-}
+  type: PropTypes.string.isRequired,
+};
 
 export default burgerIngredient;

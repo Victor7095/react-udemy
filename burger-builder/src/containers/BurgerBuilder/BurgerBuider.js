@@ -16,6 +16,8 @@ import {
   purchaseInit,
 } from "../../store/actions/";
 
+import classes from "./BurgerBuilder.module.css";
+
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
@@ -88,12 +90,12 @@ class BurgerBuilder extends Component {
     }
 
     return (
-      <Aux>
+      <div className={classes.BurgerBuilder}>
         <Modal show={purchasing} modalClosed={this.purchaseCancelHandler}>
           {orderSummary}
         </Modal>
         {burger}
-      </Aux>
+      </div>
     );
   }
 }

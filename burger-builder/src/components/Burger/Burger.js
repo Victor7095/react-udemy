@@ -2,12 +2,13 @@ import React from "react";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
-const burger = ({ ingredients }) => {
+const burger = ({ ingredients, small = false }) => {
   let transformedIngredients = ingredients.map((ingredient, i) => {
     return (
       <BurgerIngredient
         key={ingredient + i}
         type={ingredient}
+        small={small}
       ></BurgerIngredient>
     );
   });
@@ -17,9 +18,9 @@ const burger = ({ ingredients }) => {
 
   return (
     <div className={classes.Burger}>
-      <BurgerIngredient type="bread-top"></BurgerIngredient>
+      <BurgerIngredient small={small} type="bread-top"></BurgerIngredient>
       {transformedIngredients}
-      <BurgerIngredient type="bread-bottom"></BurgerIngredient>
+      <BurgerIngredient small={small} type="bread-bottom"></BurgerIngredient>
     </div>
   );
 };
