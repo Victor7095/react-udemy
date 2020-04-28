@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
+import { auth } from "../../store/actions/";
 
 import classes from "./Auth.module.css";
 
@@ -16,7 +18,7 @@ class Auth extends Component {
         },
         validation: {
           required: true,
-          isEmail: true
+          isEmail: true,
         },
         valid: false,
         touched: false,
@@ -30,13 +32,13 @@ class Auth extends Component {
         },
         validation: {
           required: true,
-          minLength: 6
+          minLength: 6,
         },
         valid: false,
         touched: false,
         value: "",
-      }
-    }
+      },
+    },
   };
 
   inputChangedHandler = (e, key) => {
@@ -73,6 +75,15 @@ class Auth extends Component {
     return isValid;
   }
 
+  submitHandler = (e) => {
+    e.preventDefault();
+    const formData = {};
+    for (let field in this.state.orderForm) {
+      formData[field] = this.state.orderForm[field].value;
+    }
+    this.props.onAuth(formData);
+  }
+
   render() {
     const formKeys = Object.keys(this.state.controls);
     let inputs = formKeys.map((key) => {
@@ -99,20 +110,17 @@ class Auth extends Component {
     });
 
     let form = (
-      <form>
+      <form onSubmit={this.submitHandler}>
         {inputs}
-        <Button type="Success">
-          SUBMIT
-        </Button>
+        <Button type="Success">SUBMIT</Button>
       </form>
     );
-    return (
-      <div className={classes.Auth}>
-        {form}
-      </div>
-    );
+    return <div className={classes.Auth}>{form}</div>;
   }
 }
 
+const mapActionsToProps = (dispatch) => ({
+  onAuth: (user) => dispatch(auth(user)),
+});
 
-export default Auth;
+export default connect(null, mapActionsToProps)(Auth);
