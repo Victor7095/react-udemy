@@ -17,7 +17,7 @@ export const auth = (user) => {
   return (dispatch) => {
     dispatch(authStart());
     axios
-      .post("/users.json", user)
+      .post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCYQNOYhEG41b211sOIDHWrrI30jwRsQ4c", user)
       .then((res) => {
         dispatch(authSuccess());
       })

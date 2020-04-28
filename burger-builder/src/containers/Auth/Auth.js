@@ -78,8 +78,8 @@ class Auth extends Component {
   submitHandler = (e) => {
     e.preventDefault();
     const formData = {};
-    for (let field in this.state.orderForm) {
-      formData[field] = this.state.orderForm[field].value;
+    for (let field in this.state.controls) {
+      formData[field] = this.state.controls[field].value;
     }
     this.props.onAuth(formData);
   }
