@@ -28,7 +28,7 @@ export const auth = (user, isSignUp) => {
         dispatch(authSuccess(res.data));
       })
       .catch((err) => {
-        dispatch(authFail(err));
+        dispatch(authFail(err.response.data.error));
       });
   };
 };

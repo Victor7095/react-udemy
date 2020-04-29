@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import Aux from "../../hoc/Aux/Aux";
 import { auth } from "../../store/actions/";
 
 import classes from "./Auth.module.css";
@@ -116,8 +118,8 @@ class Auth extends Component {
       );
     });
 
-    return (
-      <div className={classes.Auth}>
+    let form = (
+      <Aux>
         <form onSubmit={this.submitHandler}>
           {inputs}
           <Button type="Success">SUBMIT</Button>
@@ -125,13 +127,31 @@ class Auth extends Component {
         <Button clicked={this.switchAuthModeHandler} type="Danger">
           SWITCH TO {this.state.isSignUp ? "SIGNIN" : "SIGNUP"}
         </Button>
+      </Aux>
+    );
+    if (this.props.loading) form = <Spinner />;
+
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = <p>{this.props.error.message}</p>;
+    }
+
+    return (
+      <div className={classes.Auth}>
+        {errorMessage}
+        {form}
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+});
+
 const mapActionsToProps = (dispatch) => ({
   onAuth: (user, isSignUp) => dispatch(auth(user, isSignUp)),
 });
 
-export default connect(null, mapActionsToProps)(Auth);
+export default connect(mapStateToProps, mapActionsToProps)(Auth);
