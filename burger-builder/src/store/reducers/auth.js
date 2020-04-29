@@ -2,23 +2,29 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
 
 const initialState = {
-  ingredients: null,
-  ingredientsQuantity: null,
-  totalPrice: 4.0,
-  error: false,
+  token: null,
+  userId: null,
+  error: null,
+  loading: false,
 };
 
 const authStart = (state, action) => {
-  return updateObject(state, {});
+  return updateObject(state, { error: null, loading: true });
 };
 
 const authSuccess = (state, action) => {
-  return updateObject(state, {});
+  return updateObject(state, {
+    token: action.authData.idToken,
+    userId: action.authData.localId,
+    error: null,
+    loading: false,
+  });
 };
 
 const authFail = (state, action) =>
   updateObject(state, {
-    error: true,
+    error: action.error,
+    loading: false,
   });
 
 const reducer = (state = initialState, action) => {

@@ -9,8 +9,8 @@ export const authSuccess = (authData) => {
   return { type: actionTypes.AUTH_SUCCESS, authData };
 };
 
-export const authFail = () => {
-  return { type: actionTypes.AUTH_FAIL };
+export const authFail = (error) => {
+  return { type: actionTypes.AUTH_FAIL, error };
 };
 
 export const auth = (user, isSignUp) => {
@@ -25,7 +25,7 @@ export const auth = (user, isSignUp) => {
     axios
       .post(url, user)
       .then((res) => {
-        dispatch(authSuccess());
+        dispatch(authSuccess(res.data));
       })
       .catch((err) => {
         dispatch(authFail(err));
