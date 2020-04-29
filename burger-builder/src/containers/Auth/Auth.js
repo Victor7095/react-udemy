@@ -84,6 +84,7 @@ class Auth extends Component {
     for (let field in this.state.controls) {
       formData[field] = this.state.controls[field].value;
     }
+    formData.returnSecureToken = true;
     this.props.onAuth(formData, this.state.isSignUp);
   };
 

@@ -8,22 +8,27 @@ const initialState = {
   loading: false,
 };
 
-const authStart = (state, action) => {
-  return updateObject(state, { error: null, loading: true });
-};
-
-const authSuccess = (state, action) => {
-  return updateObject(state, {
+const authStart = (state, action) =>
+  updateObject(state, { error: null, loading: true });
+const authSuccess = (state, action) =>
+  updateObject(state, {
     token: action.authData.idToken,
     userId: action.authData.localId,
     error: null,
     loading: false,
   });
-};
 
 const authFail = (state, action) =>
   updateObject(state, {
     error: action.error,
+    loading: false,
+  });
+
+const authLogout = (state, action) =>
+  updateObject(state, {
+    token: null,
+    userId: null,
+    error: null,
     loading: false,
   });
 
@@ -34,6 +39,8 @@ const reducer = (state = initialState, action) => {
     [actionTypes.AUTH_SUCCESS]: () => authSuccess(state, action),
 
     [actionTypes.AUTH_FAIL]: () => authFail(state, action),
+
+    [actionTypes.AUTH_LOGOUT]: () => authLogout(state, action),
   };
 
   if (actions[action.type]) return actions[action.type]();

@@ -13,6 +13,18 @@ export const authFail = (error) => {
   return { type: actionTypes.AUTH_FAIL, error };
 };
 
+export const logout = () => {
+  return { type: actionTypes.AUTH_LOGOUT };
+};
+
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
+  };
+};
+
 export const auth = (user, isSignUp) => {
   return (dispatch) => {
     dispatch(authStart());
@@ -26,6 +38,7 @@ export const auth = (user, isSignUp) => {
       .post(url, user)
       .then((res) => {
         dispatch(authSuccess(res.data));
+        dispatch(checkAuthTimeout(res.data.expiresIn));
       })
       .catch((err) => {
         dispatch(authFail(err.response.data.error));
