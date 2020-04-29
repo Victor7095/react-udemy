@@ -39,6 +39,7 @@ class Auth extends Component {
         value: "",
       },
     },
+    isSignUp: true,
   };
 
   inputChangedHandler = (e, key) => {
@@ -81,8 +82,14 @@ class Auth extends Component {
     for (let field in this.state.controls) {
       formData[field] = this.state.controls[field].value;
     }
-    this.props.onAuth(formData);
-  }
+    this.props.onAuth(formData, this.state.isSignUp);
+  };
+
+  switchAuthModeHandler = () => {
+    this.setState((prevState) => ({
+      isSignUp: !prevState.isSignUp,
+    }));
+  };
 
   render() {
     const formKeys = Object.keys(this.state.controls);
@@ -109,18 +116,22 @@ class Auth extends Component {
       );
     });
 
-    let form = (
-      <form onSubmit={this.submitHandler}>
-        {inputs}
-        <Button type="Success">SUBMIT</Button>
-      </form>
+    return (
+      <div className={classes.Auth}>
+        <form onSubmit={this.submitHandler}>
+          {inputs}
+          <Button type="Success">SUBMIT</Button>
+        </form>
+        <Button clicked={this.switchAuthModeHandler} type="Danger">
+          SWITCH TO {this.state.isSignUp ? "SIGNIN" : "SIGNUP"}
+        </Button>
+      </div>
     );
-    return <div className={classes.Auth}>{form}</div>;
   }
 }
 
 const mapActionsToProps = (dispatch) => ({
-  onAuth: (user) => dispatch(auth(user)),
+  onAuth: (user, isSignUp) => dispatch(auth(user, isSignUp)),
 });
 
 export default connect(null, mapActionsToProps)(Auth);

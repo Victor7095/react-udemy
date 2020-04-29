@@ -13,11 +13,17 @@ export const authFail = () => {
   return { type: actionTypes.AUTH_FAIL };
 };
 
-export const auth = (user) => {
+export const auth = (user, isSignUp) => {
   return (dispatch) => {
     dispatch(authStart());
+    let url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCYQNOYhEG41b211sOIDHWrrI30jwRsQ4c";
+    if (!isSignUp) {
+      url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCYQNOYhEG41b211sOIDHWrrI30jwRsQ4c";
+    }
     axios
-      .post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCYQNOYhEG41b211sOIDHWrrI30jwRsQ4c", user)
+      .post(url, user)
       .then((res) => {
         dispatch(authSuccess());
       })
