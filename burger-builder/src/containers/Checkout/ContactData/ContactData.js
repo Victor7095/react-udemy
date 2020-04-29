@@ -93,7 +93,7 @@ class ContactData extends Component {
         value: "fastest",
       },
     },
-    formIsValid: false
+    formIsValid: false,
   };
 
   inputChangedHandler = (e, key) => {
@@ -146,7 +146,7 @@ class ContactData extends Component {
       customer: formData,
     };
 
-    this.props.onOrderBurger(order);
+    this.props.onOrderBurger(order, this.props.token);
   };
 
   render() {
@@ -198,11 +198,12 @@ class ContactData extends Component {
 const mapStateToProps = (state) => ({
   ingredients: state.burgerBuilder.ingredients,
   price: state.burgerBuilder.totalPrice,
-  loading: state.order.loading
+  loading: state.order.loading,
+  token: state.auth.token,
 });
 
 const mapActionsToProps = (dispatch) => ({
-  onOrderBurger: (order) => dispatch(purchaseBurger(order)),
+  onOrderBurger: (order, token) => dispatch(purchaseBurger(order, token)),
 });
 
 export default connect(
