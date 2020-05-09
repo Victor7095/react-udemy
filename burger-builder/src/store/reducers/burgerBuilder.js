@@ -22,6 +22,7 @@ const initialState = {
   ingredientsQuantity: null,
   totalPrice: 4.0,
   error: false,
+  building: false,
 };
 
 const addIngredient = (state, action) => {
@@ -37,6 +38,7 @@ const addIngredient = (state, action) => {
     ingredients: newIngredients,
     ingredientsQuantity,
     totalPrice: newPrice,
+    building: true,
   });
   //this.updatePurchaseState(newIngredients);
 };
@@ -56,6 +58,7 @@ const removeIngredient = (state, action) => {
       ingredients: newIngredients,
       ingredientsQuantity,
       totalPrice: newPrice,
+      building: true,
     });
     //this.updatePurchaseState(newIngredients);
   }
@@ -71,6 +74,7 @@ const setIngredients = (state, action) => {
     ingredientsQuantity,
     totalPrice: newPrice,
     error: false,
+    building: false,
   });
 };
 
@@ -90,7 +94,7 @@ const reducer = (state = initialState, action) => {
     [actionTypes.FETCH_INGREDIENTS_FAILED]: () =>
       fetchIngredientsFailed(state, action),
   };
-  
+
   if (actions[action.type]) return actions[action.type]();
   return state;
 };

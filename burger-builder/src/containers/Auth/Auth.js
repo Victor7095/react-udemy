@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Aux from "../../hoc/Aux/Aux";
-import { auth } from "../../store/actions/";
+import { auth, setAuthRedirectPath } from "../../store/actions/";
 
 import classes from "./Auth.module.css";
 
@@ -43,6 +44,12 @@ class Auth extends Component {
     },
     isSignUp: true,
   };
+
+  componentDidMount() {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !=="/") {
+      this.props.onSetAuthRedirectPath("/");
+    }
+  }
 
   inputChangedHandler = (e, key) => {
     const updatedForm = { ...this.state.controls };
@@ -137,8 +144,14 @@ class Auth extends Component {
       errorMessage = <p>{this.props.error.message}</p>;
     }
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+    }
+
     return (
       <div className={classes.Auth}>
+        {authRedirect}
         {errorMessage}
         {form}
       </div>
@@ -149,10 +162,14 @@ class Auth extends Component {
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.token !== null,
+  buildingBurger: state.burgerBuilder.building,
+  authRedirectPath: state.auth.authRedirectPath,
 });
 
 const mapActionsToProps = (dispatch) => ({
   onAuth: (user, isSignUp) => dispatch(auth(user, isSignUp)),
+  onSetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path)),
 });
 
 export default connect(mapStateToProps, mapActionsToProps)(Auth);
