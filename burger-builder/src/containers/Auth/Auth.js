@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import Aux from "../../hoc/Aux/Aux";
+import Aux from "../../hoc/AuxWrapper/AuxWrapper";
 import { auth, setAuthRedirectPath } from "../../store/actions/";
 
 import classes from "./Auth.module.css";

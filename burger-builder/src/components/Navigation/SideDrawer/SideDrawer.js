@@ -1,5 +1,5 @@
 import React from "react";
-import Aux from "../../../hoc/Aux/Aux";
+import Aux from "../../../hoc/AuxWrapper/AuxWrapper";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Logo from "../../Logo/Logo";
 import NavigationItems from "../../Navigation/NavigationItems/NavigationItems";
