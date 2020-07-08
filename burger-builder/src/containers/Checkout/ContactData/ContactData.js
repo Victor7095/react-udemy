@@ -7,7 +7,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../../axios-orders";
 import { purchaseBurger } from "../../../store/actions/";
-import { updateObject } from "../../../shared/utility";
+import { updateObject, checkValidity } from "../../../shared/utility";
 
 import classes from "./ContactData.module.css";
 
@@ -100,7 +100,7 @@ class ContactData extends Component {
   inputChangedHandler = (e, key) => {
     const formField = updateObject(this.state.orderForm[key], {
       value: e.target.value,
-      valid: this.checkValidity(
+      valid: checkValidity(
         e.target.value,
         this.state.orderForm[key].validation
       ),
@@ -118,24 +118,6 @@ class ContactData extends Component {
 
     this.setState({ orderForm: updatedForm, formIsValid });
   };
-
-  checkValidity(value, rules) {
-    let isValid = true;
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    return isValid;
-  }
 
   orderHandler = (event) => {
     event.preventDefault();

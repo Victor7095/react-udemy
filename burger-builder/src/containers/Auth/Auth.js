@@ -7,7 +7,7 @@ import Input from "../../components/UI/Input/Input";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Aux from "../../hoc/AuxWrapper/AuxWrapper";
 import { auth, setAuthRedirectPath } from "../../store/actions/";
-import { updateObject } from "../../shared/utility";
+import { updateObject, checkValidity } from "../../shared/utility";
 
 import classes from "./Auth.module.css";
 
@@ -56,7 +56,7 @@ class Auth extends Component {
     const updatedForm = updateObject(this.state.controls, {
       [key]: updateObject(this.state.controls[key], {
         value: e.target.value,
-        valid: this.checkValidity(
+        valid: checkValidity(
           e.target.value,
           this.state.controls[key].validation
         ),
@@ -66,29 +66,6 @@ class Auth extends Component {
 
     this.setState({ controls: updatedForm });
   };
-
-  checkValidity(value, rules) {
-    let isValid = true;
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
 
   submitHandler = (e) => {
     e.preventDefault();
