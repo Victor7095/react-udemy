@@ -4,12 +4,17 @@ import PropTypes from "prop-types";
 import Aux from "../../../hoc/AuxWrapper/AuxWrapper";
 import classes from "./BurgerIngredient.module.css";
 
-const burgerIngredient = ({ type, small = false, clicked = null }) => {
-
-  let ingredientControlClasses = [classes.IngredientControl]; 
+const burgerIngredient = ({
+  type,
+  small = false,
+  clicked = null,
+  readonly = false,
+}) => {
+  let ingredientControlClasses = [classes.IngredientControl];
   if (!clicked) ingredientControlClasses.push(classes.IngredientControlHidden);
 
-  const ingredientClasses = small ? [classes.small, classes.BurgerIngredient] : [classes.BurgerIngredient];
+  let ingredientClasses = [classes.BurgerIngredient];
+  if (small) ingredientClasses.push(classes.small);
 
   const ingredientChoices = {
     "bread-bottom": (
@@ -51,9 +56,11 @@ const burgerIngredient = ({ type, small = false, clicked = null }) => {
 
   return (
     <Aux>
-      <div className={ingredientControlClasses.join(" ")}>
-        <button onClick={clicked}>-</button>
-      </div>
+      {!readonly ? (
+        <div className={ingredientControlClasses.join(" ")}>
+          <button onClick={clicked}>-</button>
+        </div>
+      ) : null}
       {ingredientChoices[type]}
     </Aux>
   );

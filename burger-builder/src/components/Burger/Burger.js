@@ -2,26 +2,44 @@ import React from "react";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
-const burger = ({ ingredients, editable = false, small = false, onIngredientClickHandler }) => {
+const burger = ({
+  ingredients,
+  readonly = false,
+  small = false,
+  onIngredientClickHandler,
+}) => {
   let transformedIngredients = ingredients.map((ingredient, i) => {
     return (
       <BurgerIngredient
         key={ingredient + i}
         type={ingredient}
         small={small}
-        clicked={editable ? () => onIngredientClickHandler(i) : null}
+        readonly={readonly}
+        clicked={onIngredientClickHandler ? () => onIngredientClickHandler(i) : null}
       ></BurgerIngredient>
     );
   });
   if (transformedIngredients.length === 0) {
-    transformedIngredients = <p className={classes.EmptyBurger}>Please start adding in some ingredients!</p>;
+    transformedIngredients = (
+      <p className={classes.EmptyBurger}>
+        Please start adding in some ingredients!
+      </p>
+    );
   }
 
   return (
     <div className={classes.Burger}>
-      <BurgerIngredient small={small} type="bread-top"></BurgerIngredient>
+      <BurgerIngredient
+        readonly={readonly}
+        small={small}
+        type="bread-top"
+      ></BurgerIngredient>
       {transformedIngredients}
-      <BurgerIngredient small={small} type="bread-bottom"></BurgerIngredient>
+      <BurgerIngredient
+        readonly={readonly}
+        small={small}
+        type="bread-bottom"
+      ></BurgerIngredient>
     </div>
   );
 };

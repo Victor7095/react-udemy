@@ -94,7 +94,6 @@ class BurgerBuilder extends Component {
       burger = (
         <Aux>
           <Burger
-            editable={true}
             ingredients={ingredients}
             onIngredientClickHandler={this.removeIngredientByIndexHandler}
           />

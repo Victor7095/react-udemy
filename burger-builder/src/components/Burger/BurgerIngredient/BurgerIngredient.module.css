@@ -5,7 +5,6 @@
 
 .IngredientControl > button {
   height: 30px;
-  line-height: 30px;  
   width: 30px;  
   font-size: 1em;
   font-weight: bold;
@@ -39,14 +38,14 @@
 }
 
 .BreadTop {
-  height: 80px;
+  height: 90px;
   width: 80%;
   background: linear-gradient(#bc581e, #e27b36);
   border-radius: 50% 50% 0 0;
   box-shadow: inset -15px 0 #c15711;
   margin: 2% auto;
   position: relative;
-  flex-basis: 85%;
+  flex-basis: 80%;
 }
 
 .Seeds1 {
@@ -55,7 +54,7 @@
   position: absolute;
   background-color: white;
   left: 30%;
-  top: 50%;
+  top: 60%;
   border-radius: 40%;
   transform: rotate(-20deg);
   box-shadow: inset -2px -3px #c9c9c9;
@@ -144,7 +143,7 @@
   height: 20px;
   background: linear-gradient(#bf3813, #c45e38);
   margin: 2% auto;
-  flex-basis: 85%;
+  flex-basis: 80%;
 }
 
 .BreadBottom.small {
