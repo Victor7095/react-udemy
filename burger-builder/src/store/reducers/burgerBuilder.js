@@ -64,6 +64,25 @@ const removeIngredient = (state, action) => {
   }
 };
 
+const removeIngredientByIndex = (state, action) => {
+  const ingredientsQuantity = { ...state.ingredientsQuantity };
+  const newIngredients = [...state.ingredients];
+  const igIndex = action.igIndex;
+  const igName = newIngredients[igIndex];
+  
+  newIngredients.splice(igIndex, 1);
+  ingredientsQuantity[igName]--;
+
+  const newPrice = calculatePrice(ingredientsQuantity);
+
+  return updateObject(state, {
+    ingredients: newIngredients,
+    ingredientsQuantity,
+    totalPrice: newPrice,
+    building: true,
+  });
+};
+
 const setIngredients = (state, action) => {
   const { ingredientsOrder = [], ingredientsQuantity } = action.ingredientsInfo;
 
@@ -88,6 +107,9 @@ const reducer = (state = initialState, action) => {
     [actionTypes.ADD_INGREDIENT]: () => addIngredient(state, action),
 
     [actionTypes.REMOVE_INGREDIENT]: () => removeIngredient(state, action),
+
+    [actionTypes.REMOVE_INGREDIENT_BY_INDEX]: () =>
+      removeIngredientByIndex(state, action),
 
     [actionTypes.SET_INGREDIENTS]: () => setIngredients(state, action),
 

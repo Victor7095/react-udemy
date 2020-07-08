@@ -12,9 +12,10 @@ import axios from "../../axios-orders";
 import {
   addIngredient,
   removeIngredient,
+  removeIngredientByIndex,
   initIngredients,
   purchaseInit,
-  setAuthRedirectPath
+  setAuthRedirectPath,
 } from "../../store/actions/";
 
 import classes from "./BurgerBuilder.module.css";
@@ -34,6 +35,10 @@ class BurgerBuilder extends Component {
 
   removeIngredientHandler = (type) => {
     this.props.onIngredientRemoved(type);
+  };
+
+  removeIngredientByIndexHandler = (index) => {
+    this.props.onIngredientRemovedByIndex(index);
   };
 
   purchaseHandler = () => {
@@ -88,7 +93,11 @@ class BurgerBuilder extends Component {
       const purchasable = ingredients.length > 0;
       burger = (
         <Aux>
-          <Burger ingredients={ingredients} />
+          <Burger
+            editable={true}
+            ingredients={ingredients}
+            onIngredientClickHandler={this.removeIngredientByIndexHandler}
+          />
           <BuildControls
             ingredientAdded={this.addIngredientHandler}
             ingredientRemoved={this.removeIngredientHandler}
@@ -124,9 +133,10 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = (dispatch) => ({
   onIngredientAdded: (igName) => dispatch(addIngredient(igName)),
   onIngredientRemoved: (igName) => dispatch(removeIngredient(igName)),
+  onIngredientRemovedByIndex: (igName) => dispatch(removeIngredientByIndex(igName)),
   onInitIngredients: () => dispatch(initIngredients()),
   onInitPurchase: () => dispatch(purchaseInit()),
-  onSetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path))
+  onSetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path)),
 });
 
 export default connect(

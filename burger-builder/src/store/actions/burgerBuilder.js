@@ -9,6 +9,10 @@ export const removeIngredient = (igName) => {
   return { type: actionTypes.REMOVE_INGREDIENT, igName };
 };
 
+export const removeIngredientByIndex = (igIndex) => {
+  return { type: actionTypes.REMOVE_INGREDIENT_BY_INDEX, igIndex };
+};
+
 export const setIngredients = (ingredientsInfo) => {
   return { type: actionTypes.SET_INGREDIENTS, ingredientsInfo };
 };
