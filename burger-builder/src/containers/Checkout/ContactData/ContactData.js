@@ -7,6 +7,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../../axios-orders";
 import { purchaseBurger } from "../../../store/actions/";
+import { updateObject } from "../../../shared/utility";
 
 import classes from "./ContactData.module.css";
 
@@ -97,12 +98,18 @@ class ContactData extends Component {
   };
 
   inputChangedHandler = (e, key) => {
-    const updatedForm = { ...this.state.orderForm };
-    const formField = { ...updatedForm[key] };
-    formField.value = e.target.value;
-    formField.valid = this.checkValidity(formField.value, formField.validation);
-    formField.touched = true;
-    updatedForm[key] = formField;
+    const formField = updateObject(this.state.orderForm[key], {
+      value: e.target.value,
+      valid: this.checkValidity(
+        e.target.value,
+        this.state.orderForm[key].validation
+      ),
+      touched: true,
+    });
+
+    const updatedForm = updateObject(this.state.orderForm, {
+      [key]: formField,
+    });
 
     let formIsValid = true;
     for (let fieldName in updatedForm) {

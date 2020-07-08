@@ -7,6 +7,7 @@ import Input from "../../components/UI/Input/Input";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Aux from "../../hoc/AuxWrapper/AuxWrapper";
 import { auth, setAuthRedirectPath } from "../../store/actions/";
+import { updateObject } from "../../shared/utility";
 
 import classes from "./Auth.module.css";
 
@@ -46,18 +47,22 @@ class Auth extends Component {
   };
 
   componentDidMount() {
-    if (!this.props.buildingBurger && this.props.authRedirectPath !=="/") {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath("/");
     }
   }
 
   inputChangedHandler = (e, key) => {
-    const updatedForm = { ...this.state.controls };
-    const formField = { ...updatedForm[key] };
-    formField.value = e.target.value;
-    formField.valid = this.checkValidity(formField.value, formField.validation);
-    formField.touched = true;
-    updatedForm[key] = formField;
+    const updatedForm = updateObject(this.state.controls, {
+      [key]: updateObject(this.state.controls[key], {
+        value: e.target.value,
+        valid: this.checkValidity(
+          e.target.value,
+          this.state.controls[key].validation
+        ),
+        touched: true,
+      }),
+    });
 
     this.setState({ controls: updatedForm });
   };
