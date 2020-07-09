@@ -16,11 +16,11 @@ import {
   initIngredients,
   purchaseInit,
   setAuthRedirectPath,
-} from "../../store/actions/";
+} from "../../store/actions";
 
 import classes from "./BurgerBuilder.module.css";
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     purchasing: false,
   };

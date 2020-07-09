@@ -4,7 +4,7 @@ import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
 
 import Layout from "./hoc/Layout/Layout";
-import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuider";
+import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 import Logout from "./containers/Auth/Logout/Logout";
 import { authCheckState } from "./store/actions/";
 
