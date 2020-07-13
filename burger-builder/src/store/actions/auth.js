@@ -17,12 +17,12 @@ export const logout = () => {
   return { type: actionTypes.AUTH_INITIATE_LOGOUT };
 };
 
+export const logoutSucceed = () => {
+  return { type: actionTypes.AUTH_LOGOUT };
+};
+
 export const checkAuthTimeout = (expirationTime) => {
-  return (dispatch) => {
-    setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime * 1000);
-  };
+  return { type: actionTypes.AUTH_CHECK_TIMEOUT, expirationTime };
 };
 
 export const auth = (user, isSignUp) => {
@@ -65,7 +65,8 @@ export const authCheckState = () => {
     if (!idToken) {
       dispatch(logout());
     } else {
-      const expirationDate = new Date(localStorage.getItem("expirationDate")).getTime() / 1000;
+      const expirationDate =
+        new Date(localStorage.getItem("expirationDate")).getTime() / 1000;
       const now = new Date().getTime() / 1000;
       if (now < expirationDate) {
         dispatch(authSuccess({ idToken, localId }));
