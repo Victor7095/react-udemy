@@ -33,7 +33,12 @@ class App extends Component {
           Toogle
         </button>
         <br></br>
-        <Transition in={this.state.showBlock} timeout={300} mountOnEnter unmountOnExit>
+        <Transition
+          in={this.state.showBlock}
+          timeout={300}
+          mountOnEnter
+          unmountOnExit
+        >
           {(state) => (
             <div
               style={{
@@ -47,8 +52,15 @@ class App extends Component {
             ></div>
           )}
         </Transition>
-        <Modal show={this.state.modalOpen} closed={this.closeModal} />
-        <Backdrop show={this.state.modalOpen} />
+        <Transition
+          in={this.state.modalOpen}
+          timeout={1000}
+          mountOnEnter
+          unmountOnExit
+        >
+          {(state) => <Modal show={state} closed={this.closeModal} />}
+        </Transition>
+        {this.state.modalOpen ? <Backdrop show /> : null}
         <button className="Button" onClick={this.showModal}>
           Open Modal
         </button>
