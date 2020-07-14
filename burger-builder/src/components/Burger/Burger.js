@@ -1,4 +1,5 @@
 import React from "react";
+import { TransitionGroup } from "react-transition-group";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
@@ -8,18 +9,22 @@ const burger = ({
   small = false,
   onIngredientClickHandler,
 }) => {
-  let transformedIngredients = ingredients.map((ingredient, i) => {
-    return (
-      <BurgerIngredient
-        key={ingredient + i}
-        type={ingredient}
-        small={small}
-        readonly={readonly}
-        clicked={onIngredientClickHandler ? () => onIngredientClickHandler(i) : null}
-      ></BurgerIngredient>
-    );
-  });
-  if (transformedIngredients.length === 0) {
+  let transformedIngredients = (
+    <TransitionGroup>
+      {ingredients.map((ingredient, i) => (
+        <BurgerIngredient
+          key={ingredient.id}
+          type={ingredient.name}
+          small={small}
+          readonly={readonly}
+          clicked={
+            onIngredientClickHandler && (() => onIngredientClickHandler(i))
+          }
+        ></BurgerIngredient>
+      ))}
+    </TransitionGroup>
+  );
+  if (ingredients.length === 0) {
     transformedIngredients = (
       <p className={classes.EmptyBurger}>
         Please start adding in some ingredients!

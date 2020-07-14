@@ -1,3 +1,4 @@
+import uuid from "uuid";
 import { put } from "redux-saga/effects";
 
 import axios from "../../axios-orders";
@@ -25,7 +26,11 @@ export function* fetchOrdersSaga(action) {
   try {
     const res = yield axios.get("/orders.json" + queryParams);
     const orders = Object.keys(res.data).map((key) => {
-      return { id: key, ...res.data[key] };
+      const ingredients = res.data[key].ingredients.map((igName) => ({
+        id: uuid(),
+        name: igName,
+      }));
+      return { id: key, ...res.data[key], ingredients };
     });
 
     yield put(actions.fetchOrdersSuccess(orders));

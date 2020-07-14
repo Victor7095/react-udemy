@@ -130,7 +130,7 @@ class ContactData extends Component {
     }
 
     const order = {
-      ingredients: ingredients,
+      ingredients: ingredients.map((ig) => ig.name),
       price: price,
       customer: formData,
       userId: this.props.userId,

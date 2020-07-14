@@ -20,3 +20,31 @@ html, body, #root {
   display: flex;
   flex-direction: column;
 }
+
+.slide-enter {
+  max-height: 0;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.slide-enter-active {
+  max-height: 100px;
+  opacity: 1;
+  transform: translateX(0);
+  transition-timing-function: ease-in;
+  transition: opacity 0.3s 0.3s, transform 0.3s 0.3s, max-height 0.3s 0s;
+}
+
+.slide-exit {
+  max-height: 100px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-exit-active {
+  max-height: 0;
+  opacity: 0;
+  transform: translateX(40px);
+  transition-timing-function: ease-in;
+  transition: opacity 0.3s 0s, transform 0.3s 0.3s, max-height 0.3s 0.3s;
+}

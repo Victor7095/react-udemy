@@ -1,3 +1,4 @@
+import uuid from "uuid";
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../../shared/utility";
 
@@ -27,7 +28,7 @@ const initialState = {
 
 const addIngredient = (state, action) => {
   const newIngredients = [...state.ingredients];
-  newIngredients.push(action.igName);
+  newIngredients.push({id: uuid(), name: action.igName});
 
   const ingredientsQuantity = { ...state.ingredientsQuantity };
   ingredientsQuantity[action.igName]++;
@@ -47,7 +48,8 @@ const removeIngredient = (state, action) => {
   const ingredientsQuantity = { ...state.ingredientsQuantity };
   if (ingredientsQuantity[action.igName] > 0) {
     const newIngredients = [...state.ingredients];
-    const igIndex = newIngredients.lastIndexOf(action.igName);
+    const igNames = newIngredients.map(ingredient => ingredient.name)
+    const igIndex = igNames.lastIndexOf(action.igName);
     newIngredients.splice(igIndex, 1);
 
     ingredientsQuantity[action.igName]--;
@@ -68,8 +70,8 @@ const removeIngredientByIndex = (state, action) => {
   const ingredientsQuantity = { ...state.ingredientsQuantity };
   const newIngredients = [...state.ingredients];
   const igIndex = action.igIndex;
-  const igName = newIngredients[igIndex];
-  
+  const igName = newIngredients[igIndex].name;
+
   newIngredients.splice(igIndex, 1);
   ingredientsQuantity[igName]--;
 
@@ -84,7 +86,11 @@ const removeIngredientByIndex = (state, action) => {
 };
 
 const setIngredients = (state, action) => {
-  const { ingredientsOrder = [], ingredientsQuantity } = action.ingredientsInfo;
+  let { ingredientsOrder = [], ingredientsQuantity } = action.ingredientsInfo;
+  ingredientsOrder = ingredientsOrder.map((igName) => ({
+    id: uuid(),
+    name: igName,
+  }));
 
   const newPrice = calculatePrice(ingredientsQuantity);
 
