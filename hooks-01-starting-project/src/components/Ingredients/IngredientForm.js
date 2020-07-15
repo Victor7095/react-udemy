@@ -22,7 +22,10 @@ const IngredientForm = React.memo((props) => {
               id="title"
               value={ingredient.title}
               onChange={(e) =>
-                setIngredient({ ...ingredient, title: e.target.value })
+                setIngredient((prevIngredient) => ({
+                  ...prevIngredient,
+                  title: e.target.value,
+                }))
               }
             />
           </div>
@@ -33,7 +36,10 @@ const IngredientForm = React.memo((props) => {
               id="amount"
               value={ingredient.amount}
               onChange={(e) =>
-                setIngredient({ ...ingredient, amount: e.target.value })
+                setIngredient((prevIngredient) => ({
+                  ...prevIngredient,
+                  amount: e.target.value,
+                }))
               }
             />
           </div>
