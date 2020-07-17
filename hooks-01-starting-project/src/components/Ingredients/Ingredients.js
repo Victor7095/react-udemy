@@ -1,16 +1,27 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useReducer } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
 import ErrorModal from "../UI/ErrorModal";
 import Search from "./Search";
 
+const ingredientReducer = (currentIngredients, { type, ...payload }) => {
+  const actionTypes = {
+    SET: ({ ingredients }) => ingredients,
+    ADD: ({ newIngredient }) => [...currentIngredients, newIngredient],
+    DELETE: ({ id }) => currentIngredients.filter((ig) => id !== ig.id),
+  };
+
+  if (!actionTypes[type]) throw new Error();
+  return actionTypes[type](payload);
+};
+
 function Ingredients() {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
-    setIngredients(filteredIngredients);
+    dispatch({ type: "SET", ingredients: filteredIngredients });
   }, []);
 
   const addIngredientHandler = (newIngredient) => {
@@ -25,10 +36,10 @@ function Ingredients() {
       .then((res) => res.json())
       .then((body) => {
         clearError();
-        setIngredients((oldIngredients) => [
-          ...oldIngredients,
-          { id: body.name, ...newIngredient },
-        ]);
+        dispatch({
+          type: "ADD",
+          newIngredient: { id: body.name, ...newIngredient },
+        });
       })
       .catch((err) => {
         setError(err.message);
@@ -44,9 +55,7 @@ function Ingredients() {
     })
       .then((res) => {
         clearError();
-        setIngredients((oldIngredients) =>
-          oldIngredients.filter((ig) => id !== ig.id)
-        );
+        dispatch({ type: "DELETE", id });
       })
       .catch((err) => {
         setError(err);
@@ -68,9 +77,7 @@ function Ingredients() {
         loading={isLoading}
       />
       <section>
-        <Search
-          onFilterIngredients={filteredIngredientsHandler}
-        />
+        <Search onFilterIngredients={filteredIngredientsHandler} />
         <IngredientList
           ingredients={ingredients}
           onRemoveItem={removeIngredientHandler}

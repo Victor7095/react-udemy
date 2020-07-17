@@ -26,7 +26,7 @@ const Search = React.memo(({ onFilterIngredients }) => {
     }, 500);
     return () => {
       clearTimeout(timer);
-    }
+    };
   }, [searchTitle, onFilterIngredients, searchInputRef]);
 
   return (
