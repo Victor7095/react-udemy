@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useReducer, useMemo } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
 import ErrorModal from "../UI/ErrorModal";
@@ -37,45 +37,61 @@ function Ingredients() {
     dispatch({ type: "SET", ingredients: filteredIngredients });
   }, []);
 
-  const addIngredientHandler = (newIngredient) => {
-    dispatchHttp({ type: "SEND" });
-    fetch("https://react-hooks-c609e.firebaseio.com/ingredients.json", {
-      method: "POST",
-      body: JSON.stringify(newIngredient),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((body) => {
-        clearError();
-        dispatch({
-          type: "ADD",
-          newIngredient: { id: body.name, ...newIngredient },
-        });
-      })
-      .catch((err) => {
-        dispatchHttp({ type: "ERROR", error: err });
-      });
-  };
-
-  const removeIngredientHandler = (id) => {
-    dispatchHttp({ type: "SEND" });
-    fetch(`https://react-hooks-c609e.firebaseio.com/ingredients/${id}.json`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        clearError();
-        dispatch({ type: "DELETE", id });
-      })
-      .catch((err) => {
-        dispatchHttp({ type: "ERROR", error: err });
-      });
-  };
-
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatchHttp({ type: "RESPONSE" });
-  };
+  }, []);
+
+  const addIngredientHandler = useCallback(
+    (newIngredient) => {
+      dispatchHttp({ type: "SEND" });
+      fetch("https://react-hooks-c609e.firebaseio.com/ingredients.json", {
+        method: "POST",
+        body: JSON.stringify(newIngredient),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((body) => {
+          clearError();
+          dispatch({
+            type: "ADD",
+            newIngredient: { id: body.name, ...newIngredient },
+          });
+        })
+        .catch((err) => {
+          dispatchHttp({ type: "ERROR", error: err });
+        });
+    },
+    [clearError]
+  );
+
+  const removeIngredientHandler = useCallback(
+    (id) => {
+      dispatchHttp({ type: "SEND" });
+      fetch(`https://react-hooks-c609e.firebaseio.com/ingredients/${id}.json`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          clearError();
+          dispatch({ type: "DELETE", id });
+        })
+        .catch((err) => {
+          dispatchHttp({ type: "ERROR", error: err });
+        });
+    },
+    [clearError]
+  );
+
+  const ingredientsList = useMemo(
+    () => (
+      <IngredientList
+        ingredients={ingredients}
+        onRemoveItem={removeIngredientHandler}
+      />
+    ),
+    [ingredients, removeIngredientHandler]
+  );
 
   return (
     <div className="App">
@@ -89,10 +105,7 @@ function Ingredients() {
       />
       <section>
         <Search onFilterIngredients={filteredIngredientsHandler} />
-        <IngredientList
-          ingredients={ingredients}
-          onRemoveItem={removeIngredientHandler}
-        />
+        {ingredientsList}
       </section>
     </div>
   );

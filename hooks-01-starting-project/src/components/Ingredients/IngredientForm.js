@@ -41,7 +41,7 @@ const IngredientForm = React.memo(({ onAddIngredient, loading }) => {
           </div>
           <div className="ingredient-form__actions">
             <button type="submit">Add Ingredient</button>
-            { loading && <LoadingIndicator/> }
+            {loading && <LoadingIndicator />}
           </div>
         </form>
       </Card>
