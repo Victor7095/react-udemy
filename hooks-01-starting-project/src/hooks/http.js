@@ -1,5 +1,13 @@
 import { useReducer, useCallback } from "react";
 
+const initialState = {
+  isLoading: false,
+  error: null,
+  data: null,
+  reqExtra: null,
+  identifier: null,
+};
+
 const httpReducer = (currentHttp, { type, ...payload }) => {
   const actionTypes = {
     SEND: ({ identifier }) => ({
@@ -17,6 +25,7 @@ const httpReducer = (currentHttp, { type, ...payload }) => {
       reqExtra: extra,
     }),
     ERROR: ({ error }) => ({ isLoading: false, error }),
+    CLEAR: () => initialState,
   };
 
   if (!actionTypes[type]) throw new Error();
@@ -24,13 +33,9 @@ const httpReducer = (currentHttp, { type, ...payload }) => {
 };
 
 const useHttp = () => {
-  const [httpState, dispatchHttp] = useReducer(httpReducer, {
-    isLoading: false,
-    error: null,
-    data: null,
-    reqExtra: null,
-    identifier: null,
-  });
+  const [httpState, dispatchHttp] = useReducer(httpReducer, initialState);
+
+  const clear = useCallback(() => dispatchHttp({ type: "CLEAR" }), []);
 
   const sendRequest = useCallback((url, method, body, extra, reqIdentifier) => {
     dispatchHttp({ type: "SEND", identifier: reqIdentifier });
@@ -56,7 +61,8 @@ const useHttp = () => {
     httpState.data,
     sendRequest,
     httpState.reqExtra,
-    httpState.identifier
+    httpState.identifier,
+    clear,
   ];
 };
 

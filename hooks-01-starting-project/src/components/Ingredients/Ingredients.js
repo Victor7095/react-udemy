@@ -18,11 +18,7 @@ const ingredientReducer = (currentIngredients, { type, ...payload }) => {
 
 function Ingredients() {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
-  const [isLoading, error, data, sendRequest, reqExtra, identifier] = useHttp();
-
-  const filteredIngredientsHandler = useCallback((filteredIngredients) => {
-    dispatch({ type: "SET", ingredients: filteredIngredients });
-  }, []);
+  const [isLoading, error, data, sendRequest, reqExtra, identifier, clear] = useHttp();
 
   useEffect(() => {
     if (!isLoading && !error && identifier === "REMOVE_INGREDIENT")
@@ -35,8 +31,8 @@ function Ingredients() {
     }
   }, [isLoading, data, reqExtra, identifier, error]);
 
-  const clearError = useCallback(() => {
-    // dispatchHttp({ type: "RESPONSE" });
+  const filteredIngredientsHandler = useCallback((filteredIngredients) => {
+    dispatch({ type: "SET", ingredients: filteredIngredients });
   }, []);
 
   const addIngredientHandler = useCallback(
@@ -77,7 +73,7 @@ function Ingredients() {
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={clearError}>{error.message}</ErrorModal>}
+      {error && <ErrorModal onClose={clear}>{error.message}</ErrorModal>}
 
       <IngredientForm
         onAddIngredient={addIngredientHandler}
