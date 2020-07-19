@@ -13,6 +13,13 @@ export function* purchaseBurgerSaga(action) {
       action.orderData
     );
 
+    action.orderData.ingredients = action.orderData.ingredients.map(
+      (igName) => ({
+        id: uuid(),
+        name: igName,
+      })
+    );
+
     yield put(actions.purchaseBurgerSuccess(res.data.name, action.orderData));
   } catch (err) {
     yield put(actions.purchaseBurgerFail(err));
@@ -25,13 +32,15 @@ export function* fetchOrdersSaga(action) {
 
   try {
     const res = yield axios.get("/orders.json" + queryParams);
-    const orders = Object.keys(res.data).map((key) => {
+    const orders = yield Object.keys(res.data).map((key) => {
       const ingredients = res.data[key].ingredients.map((igName) => ({
         id: uuid(),
         name: igName,
       }));
       return { id: key, ...res.data[key], ingredients };
     });
+
+    console.log("<FETCH ORDERS/> ", orders);
 
     yield put(actions.fetchOrdersSuccess(orders));
   } catch (err) {
