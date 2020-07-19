@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
 import ErrorModal from "../UI/ErrorModal";
@@ -15,17 +15,30 @@ const ingredientReducer = (currentIngredients, { type, ...payload }) => {
   return actionTypes[type](payload);
 };
 
+const httpReducer = (currentHttp, { type, ...payload }) => {
+  const actionTypes = {
+    SEND: () => ({ isLoading: true, error: null }),
+    RESPONSE: () => ({ isLoading: false, error: null }),
+    ERROR: ({ error }) => ({ isLoading: false, error }),
+  };
+
+  if (!actionTypes[type]) throw new Error();
+  return actionTypes[type](payload);
+};
+
 function Ingredients() {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [httpState, dispatchHttp] = useReducer(httpReducer, {
+    isLoading: false,
+    error: null,
+  });
 
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
     dispatch({ type: "SET", ingredients: filteredIngredients });
   }, []);
 
   const addIngredientHandler = (newIngredient) => {
-    setIsLoading(true);
+    dispatchHttp({ type: "SEND" });
     fetch("https://react-hooks-c609e.firebaseio.com/ingredients.json", {
       method: "POST",
       body: JSON.stringify(newIngredient),
@@ -42,14 +55,12 @@ function Ingredients() {
         });
       })
       .catch((err) => {
-        setError(err.message);
-        setIsLoading(false);
+        dispatchHttp({ type: "ERROR", error: err });
       });
   };
 
   const removeIngredientHandler = (id) => {
-    setIsLoading(true);
-
+    dispatchHttp({ type: "SEND" });
     fetch(`https://react-hooks-c609e.firebaseio.com/ingredients/${id}.json`, {
       method: "DELETE",
     })
@@ -58,23 +69,23 @@ function Ingredients() {
         dispatch({ type: "DELETE", id });
       })
       .catch((err) => {
-        setError(err);
-        setIsLoading(false);
+        dispatchHttp({ type: "ERROR", error: err });
       });
   };
 
   const clearError = () => {
-    setError(null);
-    setIsLoading(false);
+    dispatchHttp({ type: "RESPONSE" });
   };
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={clearError}>{error.message}</ErrorModal>}
+      {httpState.error && (
+        <ErrorModal onClose={clearError}>{httpState.error.message}</ErrorModal>
+      )}
 
       <IngredientForm
         onAddIngredient={addIngredientHandler}
-        loading={isLoading}
+        loading={httpState.isLoading}
       />
       <section>
         <Search onFilterIngredients={filteredIngredientsHandler} />
