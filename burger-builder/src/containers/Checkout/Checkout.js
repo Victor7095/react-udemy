@@ -1,42 +1,41 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
 
-class Checkout extends Component {
-  checkoutCancelledHandler = () => {
-    this.props.history.goBack();
+const Checkout = (props) => {
+  const { ingredients, purchased, history, match } = props;
+  console.log(props);
+  const checkoutCancelledHandler = () => {
+    history.goBack();
   };
 
-  checkoutContinuedHandler = () => {
-    this.props.history.replace("checkout/contact-data");
+  const checkoutContinuedHandler = () => {
+    history.replace("checkout/contact-data");
   };
 
-  render() {
-    let summary = <Redirect to="/" />;
-    const { ingredients, purchased } = this.props;
-    if (ingredients) {
-      let purchasedRedirect = purchased ? <Redirect to="/" /> : null;
-      summary = (
-        <div>
-          {purchasedRedirect}
-          <CheckoutSummary
-            ingredients={ingredients}
-            checkoutCancelled={this.checkoutCancelledHandler}
-            checkoutContinued={this.checkoutContinuedHandler}
-          />
-          <Route
-            path={this.props.match.url + "/contact-data"}
-            component={ContactData}
-          />
-        </div>
-      );
-    }
-    return summary;
+  let summary = <Redirect to="/" />;
+  if (ingredients) {
+    let purchasedRedirect = purchased ? <Redirect to="/" /> : null;
+    summary = (
+      <div>
+        {purchasedRedirect}
+        <CheckoutSummary
+          ingredients={ingredients}
+          checkoutCancelled={checkoutCancelledHandler}
+          checkoutContinued={checkoutContinuedHandler}
+        />
+        <Route
+          path={match.url + "/contact-data"}
+          component={ContactData}
+        />
+      </div>
+    );
   }
-}
+  return summary;
+};
 
 const mapStateToProps = (state) => ({
   ingredients: state.burgerBuilder.ingredients,

@@ -20,7 +20,7 @@ const App = ({ onTryAutoSignup, isAuthenticated }) => {
 
   let routes = (
     <Switch>
-      <Route path="/auth" render={() => <Auth />} />
+      <Route path="/auth" render={(props) => <Auth {...props}/>} />
       <Route path="/" exact component={BurgerBuilder} />
       <Redirect to="/" />
     </Switch>
@@ -29,10 +29,10 @@ const App = ({ onTryAutoSignup, isAuthenticated }) => {
     routes = (
       <Switch>
         <Route path="/" exact component={BurgerBuilder} />
-        <Route path="/checkout" component={() => <Checkout />} />
-        <Route path="/orders" component={() => <Orders />} />
+        <Route path="/checkout" component={(props) => <Checkout {...props}/>} />
+        <Route path="/orders" component={(props) => <Orders {...props}/>} />
         <Route path="/logout" component={Logout} />
-        <Route path="/auth" render={() => <Auth />} />
+        <Route path="/auth" render={(props) => <Auth {...props}/>} />
         <Redirect to="/" />
       </Switch>
     );
