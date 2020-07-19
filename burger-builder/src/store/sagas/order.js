@@ -40,8 +40,6 @@ export function* fetchOrdersSaga(action) {
       return { id: key, ...res.data[key], ingredients };
     });
 
-    console.log("<FETCH ORDERS/> ", orders);
-
     yield put(actions.fetchOrdersSuccess(orders));
   } catch (err) {
     yield put(actions.fetchOrdersFail(err));
