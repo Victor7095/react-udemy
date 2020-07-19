@@ -7,7 +7,7 @@ import ContactData from "./ContactData/ContactData";
 
 const Checkout = (props) => {
   const { ingredients, purchased, history, match } = props;
-  console.log(props);
+
   const checkoutCancelledHandler = () => {
     history.goBack();
   };
