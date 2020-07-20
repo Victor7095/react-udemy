@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -10,136 +10,128 @@ import { auth, setAuthRedirectPath } from "../../store/actions/";
 import { updateObject, checkValidity } from "../../shared/utility";
 
 import classes from "./Auth.module.css";
+import { useState } from "react";
 
-class Auth extends Component {
-  state = {
-    controls: {
-      email: {
-        elType: "input",
-        elConfig: {
-          type: "email",
-          placeholder: "Email Address",
-        },
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
-        value: "",
+const Auth = ({
+  buildingBurger,
+  authRedirectPath,
+  onSetAuthRedirectPath,
+  ...props
+}) => {
+  const [controls, setControls] = useState({
+    email: {
+      elType: "input",
+      elConfig: {
+        type: "email",
+        placeholder: "Email Address",
       },
-      password: {
-        elType: "input",
-        elConfig: {
-          type: "password",
-          placeholder: "Password",
-        },
-        validation: {
-          required: true,
-          minLength: 6,
-        },
-        valid: false,
-        touched: false,
-        value: "",
+      validation: {
+        required: true,
+        isEmail: true,
       },
+      valid: false,
+      touched: false,
+      value: "",
     },
-    isSignUp: true,
-  };
+    password: {
+      elType: "input",
+      elConfig: {
+        type: "password",
+        placeholder: "Password",
+      },
+      validation: {
+        required: true,
+        minLength: 6,
+      },
+      valid: false,
+      touched: false,
+      value: "",
+    },
+  });
+  const [isSignUp, setIsSignUp] = useState(true);
 
-  componentDidMount() {
-    if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
-      this.props.onSetAuthRedirectPath("/");
+  useEffect(() => {
+    if (!buildingBurger && authRedirectPath !== "/") {
+      onSetAuthRedirectPath("/");
     }
-  }
+  }, [buildingBurger, authRedirectPath, onSetAuthRedirectPath]);
 
-  inputChangedHandler = (e, key) => {
-    const updatedForm = updateObject(this.state.controls, {
-      [key]: updateObject(this.state.controls[key], {
+  const inputChangedHandler = (e, key) => {
+    const updatedForm = updateObject(controls, {
+      [key]: updateObject(controls[key], {
         value: e.target.value,
-        valid: checkValidity(
-          e.target.value,
-          this.state.controls[key].validation
-        ),
+        valid: checkValidity(e.target.value, controls[key].validation),
         touched: true,
       }),
     });
 
-    this.setState({ controls: updatedForm });
+    setControls(updatedForm);
   };
 
-  submitHandler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     const formData = {};
-    for (let field in this.state.controls) {
-      formData[field] = this.state.controls[field].value;
+    for (let field in controls) {
+      formData[field] = controls[field].value;
     }
     formData.returnSecureToken = true;
-    this.props.onAuth(formData, this.state.isSignUp);
+    props.onAuth(formData, isSignUp);
   };
 
-  switchAuthModeHandler = () => {
-    this.setState((prevState) => ({
-      isSignUp: !prevState.isSignUp,
-    }));
+  const switchAuthModeHandler = () => {
+    setIsSignUp((prevIsSignUp) => !prevIsSignUp);
   };
 
-  render() {
-    const formKeys = Object.keys(this.state.controls);
-    let inputs = formKeys.map((key) => {
-      const {
-        elType,
-        elConfig,
-        valid,
-        validation,
-        touched,
-        value,
-      } = this.state.controls[key];
-      return (
-        <Input
-          key={key}
-          elType={elType}
-          elConfig={elConfig}
-          value={value}
-          shouldValidate={validation}
-          invalid={!valid}
-          touched={touched}
-          onChange={(e) => this.inputChangedHandler(e, key)}
-        />
-      );
-    });
-
-    let form = (
-      <Aux>
-        <form onSubmit={this.submitHandler}>
-          {inputs}
-          <Button type="Success">SUBMIT</Button>
-        </form>
-        <Button clicked={this.switchAuthModeHandler} type="Danger">
-          SWITCH TO {this.state.isSignUp ? "SIGNIN" : "SIGNUP"}
-        </Button>
-      </Aux>
-    );
-    if (this.props.loading) form = <Spinner />;
-
-    let errorMessage = null;
-    if (this.props.error) {
-      errorMessage = <p>{this.props.error.message}</p>;
-    }
-
-    let authRedirect = null;
-    if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />;
-    }
-
+  const formKeys = Object.keys(controls);
+  let inputs = formKeys.map((key) => {
+    const { elType, elConfig, valid, validation, touched, value } = controls[
+      key
+    ];
     return (
-      <div className={classes.Auth}>
-        {authRedirect}
-        {errorMessage}
-        {form}
-      </div>
+      <Input
+        key={key}
+        elType={elType}
+        elConfig={elConfig}
+        value={value}
+        shouldValidate={validation}
+        invalid={!valid}
+        touched={touched}
+        onChange={(e) => inputChangedHandler(e, key)}
+      />
     );
+  });
+
+  let form = (
+    <Aux>
+      <form onSubmit={submitHandler}>
+        {inputs}
+        <Button type="Success">SUBMIT</Button>
+      </form>
+      <Button clicked={switchAuthModeHandler} type="Danger">
+        SWITCH TO {isSignUp ? "SIGNIN" : "SIGNUP"}
+      </Button>
+    </Aux>
+  );
+  if (props.loading) form = <Spinner />;
+
+  let errorMessage = null;
+  if (props.error) {
+    errorMessage = <p>{props.error.message}</p>;
   }
-}
+
+  let authRedirect = null;
+  if (props.isAuthenticated) {
+    authRedirect = <Redirect to={authRedirectPath} />;
+  }
+
+  return (
+    <div className={classes.Auth}>
+      {authRedirect}
+      {errorMessage}
+      {form}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   loading: state.auth.loading,
