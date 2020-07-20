@@ -7,14 +7,18 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 
 configure({ adapter: new Adapter() });
 
+jest.mock("react-redux", () => ({
+  useDispatch: () => {},
+  useSelector: () => ({ ingredients: ["salad"] }),
+}));
+
 describe("<BurgerBuilder />", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<BurgerBuilder onInitIngredients={() => {}} />);
+    wrapper = shallow(<BurgerBuilder />);
   });
 
   it("should render <BuildControls /> when receiving ingredients", () => {
-    wrapper.setProps({ ingredients: ["salad"] });
     expect(wrapper.find(BuildControls)).toHaveLength(1);
   });
 });
