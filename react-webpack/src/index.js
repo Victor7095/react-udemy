@@ -5,10 +5,10 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
-const app = (
+const MyApp = () => (
   <BrowserRouter>
     <App />
   </BrowserRouter>
 );
 
-ReactDOM.render(app, document.getElementById("app"));
+ReactDOM.render(<MyApp />, document.getElementById("app"));
