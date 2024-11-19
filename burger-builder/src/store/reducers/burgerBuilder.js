@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../../shared/utility";
 
@@ -28,7 +28,7 @@ const initialState = {
 
 const addIngredient = (state, action) => {
   const newIngredients = [...state.ingredients];
-  newIngredients.push({id: uuid(), name: action.igName});
+  newIngredients.push({ id: uuid(), name: action.igName });
 
   const ingredientsQuantity = { ...state.ingredientsQuantity };
   ingredientsQuantity[action.igName]++;
@@ -48,7 +48,7 @@ const removeIngredient = (state, action) => {
   const ingredientsQuantity = { ...state.ingredientsQuantity };
   if (ingredientsQuantity[action.igName] > 0) {
     const newIngredients = [...state.ingredients];
-    const igNames = newIngredients.map(ingredient => ingredient.name)
+    const igNames = newIngredients.map((ingredient) => ingredient.name);
     const igIndex = igNames.lastIndexOf(action.igName);
     newIngredients.splice(igIndex, 1);
 
